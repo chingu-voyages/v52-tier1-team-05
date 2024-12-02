@@ -75,7 +75,7 @@ header {
 }
 
 .main-h1 {
-  color: rgba(255, 144, 0, 1);
+  color: rgba(93, 90, 136, 1);
   margin: 20px 0;
   padding: 20px 0;
 
@@ -246,4 +246,66 @@ select:focus {
 .choose-container {
   margin: 40px;
   padding: 20px;
+}
+
+
+
+.follow-main {
+
+  padding: 20px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.follow-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.follow-logo {
+  text-align: center;
+  align-items: center;
+}
+
+.logo-container-1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+}
+
+.main-h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+
+
+
+.company,
+.support,
+.follow {
+  flex: 1;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 0;
+
+}
+
+
+.follow-ul {
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.follow-ul li {
+  line-height: 1.5;
 }
