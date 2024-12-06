@@ -15,17 +15,18 @@
   /** TEXT COLORS */
   --text-color-whitesmoke: whitesmoke; /* Default to light text color */
   --text-color-purple: #9795b5; /* ! best contrast ratio */
+  --text-color-purple-brighter: #b0aed0; /* ! best contrast ratio */
   --text-color-purple-2: #040404; /*  bad contrast ratio */
-
+  --text-color-gray: #3a3a3a;
   /* ? other purples */
   /* #6d5896  #9f95b3 #9795B5  */
 
   /* * --- Color Palette --- */
   --color-primary: #5d5a88;
+  --color-primary-brighter: #7d78aa;
   --color-secondary: #ff9000;
-
   --background-color: #242424;
-
+  --page-background: linear-gradient(135deg, #242424, #3a3a3aa2);
   --background-color-cta: #9f95b3;
   /* --color-tertiary: ; */
 
@@ -39,7 +40,7 @@
   /* --color-tertiary-light: #364f6b; */
 
   /* * Button styles */
-  --button-hover-background-color: #ff7700e6;
+  --button-hover-background-color: var(--color-primary); /* #ff7700e6; */
   --button-color: #ff9000;
 
   /* * --- Font Family --- */
@@ -81,12 +82,13 @@ html {
   font-weight: 400;
   color-scheme: light dark;
   color: var(--text-color-purple) !important;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   text-align: center;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 body {
@@ -97,20 +99,37 @@ body {
   align-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--background-color);
+  background: var(--page-background);
+
+  /* background-color: ; */
 }
 
 section {
+  width: 100vw;
   padding: 2rem;
+  border-bottom: 1px dotted var(--color-primary);
 }
 
 p {
   filter: contrast(1.2);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+ul {
+  display: flex;
+  gap: 20px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+  color: var(--color-primary);
+}
+
+.list-ul a:hover {
+  color: var(--button-color);
+  cursor: pointer;
 }
 
 img {
@@ -118,13 +137,15 @@ img {
 }
 
 button {
-  border-radius: 8px;
+  border-radius: var(--border-radius-medium);
   font-size: var(--font-size-l) !important;
   font-weight: 700;
   font-family: inherit;
   background-color: var(--button-color);
+  border: 1px solid var(--text-color-whitesmoke) !important;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.33s;
+  box-shadow: var(--box-shadow-dark);
 }
 
 button:focus,
@@ -143,14 +164,14 @@ label {
 }
 
 input,
-select,
-button {
-  padding: 0.75em;
-  border-radius: 5px;
+select {
+  padding: 0.7rem;
+  border-radius: var(--border-radius-small);
   border: 1px solid var(--text-color) !important;
   font-size: 1em;
 }
 
+/* * PAGE LAYOUT  */
 /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 
 header {
@@ -231,7 +252,7 @@ td.wide-cell {
   background-color: var(--color-secondary);
   color: whitesmoke;
   font-weight: bold;
-  border-radius: 15px;
+  border-radius: var(--border-radius-large);
   padding: 5px;
   width: 100px;
   border: none;
@@ -240,12 +261,12 @@ td.wide-cell {
 .confirm {
   color: whitesmoke;
   font-weight: bold;
-  border-radius: 15px;
+  border-radius: var(--border-radius-large);
   padding: 5px;
   width: 100px;
   border: none;
   height: 30px;
-  background-color: #5d5a88;
+  background-color: var(--color-primary);
 }
 button.confirm {
   margin-bottom: 5px;
@@ -274,19 +295,13 @@ button:hover {
 
 .company-div {
   display: flex;
+  gap: 1.5rem;
   flex-direction: column;
   justify-content: center;
 }
 
-.company-div h1,
-.company-div h3,
-.company-div p {
-  margin: 0 0 16px;
-}
-
 .company-image-div {
   overflow: hidden; /* Prevent any content from overflowing the container */
-
   /* Background styles */
   background: url(../images/Company\ section\ photo.jpg);
   background-size: cover;
@@ -296,48 +311,27 @@ button:hover {
   /* background-attachment: fixed; */
   border-radius: var(--border-radius-xl);
   /* opacity: 0.95; */
+  grid-column: 2 / 3; /* Explicitly place the image in the second column */
+  grid-row: 1 / 2; /* Ensure the image spans the grid row */
 }
-.company-container img {
+a .company-container img {
   width: 100%; /* Ensure the image stretches to match the container's width */
   height: 100%; /* Ensure the image stretches to match the container's height */
   object-fit: cover; /* Ensures the image scales to cover the space without distortion */
   display: block; /* Remove any inline gaps */
-  grid-column: 2 / 3; /* Explicitly place the image in the second column */
-  grid-row: 1 / 2; /* Ensure the image spans the grid row */
-}
-
-.company-container > div:last-child {
-  flex-grow: 1; /* Allow the image container to fill the remaining space */
 }
 
 .main-h1 {
+  font-size: var(--font-size-3xl);
+
   color: var(--button-color) !important;
-  margin: 20px 0;
   text-align: left;
 }
 
-ul {
-  display: flex;
-  gap: 20px;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-li {
-  list-style-type: none;
-  color: #5d5a88;
-}
-
-.list-ul a:hover {
-  color: var(--button-color);
-  cursor: pointer;
-}
-
 .company-h3 {
-  /* color: #5d5a88; */
-  font-size: 1.5rem;
-  margin: 1em 0;
+  /* color: var(--color-primary); */
+  font-size: var(--font-size-l);
+
   text-align: left;
 }
 
@@ -349,6 +343,10 @@ li {
   font-size: 1.1rem;
   line-height: 1.8rem;
   filter: contrast(1.2);
+}
+
+.company-container > div:last-child {
+  flex-grow: 1; /* Allow the image container to fill the remaining space */
 }
 
 /* ! CALL TO ACTION (CTA) SECTION */
@@ -363,11 +361,10 @@ li {
 
 .cta-title,
 .cta-subtitle {
-  font-family: 'Poppins', sans-serif;
   margin: auto;
   max-width: 550px;
-  color: #222;
   filter: contrast(120%);
+  color: var(--text-color-gray) !important;
 }
 
 .cta-subtitle {
@@ -378,7 +375,7 @@ li {
 }
 
 .cta-btn {
-  border-radius: 40px;
+  border-radius: var(--border-radius-3xl);
   padding: 1.3em;
   margin: 2em 0;
   font-size: 1.1em;
@@ -386,6 +383,9 @@ li {
 }
 
 /* * BOBBY HERE FOR THE NEXT ~~ 200 LINES */
+body.modal-open {
+  overflow: hidden;
+}
 /* Overlay for the modals */
 .form-overlay,
 .login-overlay {
@@ -417,7 +417,7 @@ li {
   background-color: var(--background-color);
   /* color: var(); */
   padding: 1.8rem;
-  border-radius: 15px;
+  border-radius: var(--border-radius-large);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   max-width: 65vw;
   display: flex;
@@ -435,6 +435,11 @@ li {
   padding: 3rem 5rem;
 }
 
+.newAppointmentForm {
+  min-width: 50vw;
+  max-width: 800px;
+}
+
 .newAppointmentForm::-webkit-scrollbar,
 .adminLoginModal::-webkit-scrollbar {
   width: 8px;
@@ -443,7 +448,7 @@ li {
 .newAppointmentForm::-webkit-scrollbar-thumb,
 .adminLoginModal::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  border-radius: var(--border-radius-medium);
 }
 
 .newAppointmentForm::-webkit-scrollbar-thumb:hover,
@@ -481,7 +486,7 @@ li {
   margin: 0 auto 1rem;
   padding: 10px 15px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius-medium);
   font-size: 1rem;
   background-color: #333;
   color: #f1f3f5;
@@ -494,7 +499,7 @@ li {
   font-size: var(--font-size-l) !important;
   text-transform: uppercase;
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: var(--border-radius-medium);
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -521,7 +526,7 @@ li {
 .spinner {
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-top: 4px solid #213547;
-  border-radius: 50%;
+  border-radius: var(--border-radius-circle);
   width: 40px;
   height: 40px;
   animation: spin 1s linear infinite;
@@ -560,7 +565,7 @@ li {
 #suggestions {
   margin: 0.1rem auto;
   border: 1px transparent #ccc;
-  border-radius: 10px;
+  border-radius: var(--border-radius-medium);
   color: #000;
   background-color: #213547;
   width: 85%;
@@ -595,7 +600,7 @@ li {
   min-height: 50%;
   background-color: rgba(255, 144, 0, 1) !important;
   padding: 20px 30px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-medium);
   font-size: 1rem;
   /* Adjust font size */
 }
@@ -658,7 +663,7 @@ select:focus {
   /* padding: 1.5rem; */
   padding: 1.5rem;
 
-  border-radius: 12px;
+  border-radius: var(--border-radius-large);
   transition: transform 0.3s;
   text-align: left;
 }
@@ -679,7 +684,7 @@ select:focus {
 }
 
 .zigzag-item.text {
-  padding: 1.5rem 6rem 1.5rem 6rem;
+  padding: 1.5rem 2.8rem;
 
   display: flex;
   gap: 1rem;
@@ -695,12 +700,109 @@ select:focus {
 /* WHY CHOOSE SOLAR SECTION */
 
 .choose-container {
-  margin: 40px;
-  padding: 20px;
+  /* margin: 40px;
+  padding: 20px; */
 }
 
-/* MEDIA QUERIES */
+/* * RESPONSIVE - MEDIA QUERIES */
 
+/* ! really small screens */
+@media (max-width: 450px) {
+  section {
+    padding: 1rem;
+    max-width: 95vw !important;
+  }
+  .newAppointmentForm,
+  .adminLoginModal {
+    height: 100vh;
+    width: 100vw;
+    padding: var(--spacing-medium);
+  }
+  .newAppointmentForm input,
+  .newAppointmentForm select,
+  .newAppointmentForm button,
+  .adminLoginModal input,
+  .adminLoginModal button {
+    width: 100% !important;
+    font-size: var(--font-size-sm);
+  }
+
+  .newAppointmentForm .error-message,
+  .adminLoginModal .error-message {
+    font-size: var(--font-size-xs);
+    transform: translate(-50%, 650%) !important;
+  }
+
+  .adminLoginModal {
+    width: 100%;
+  }
+
+  /* ! company small screen */
+  .company-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .company-div {
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .company-p {
+    text-align: center;
+  }
+
+  .company-image-div {
+    height: 25vh;
+  }
+
+  .main-h1 {
+    font-size: var(--font-size-2xl);
+
+    color: var(--button-color) !important;
+    text-align: left;
+  }
+
+  .review-text {
+    padding: 0 2.5rem !important;
+    font-size: var(--font-size-base);
+  }
+  .zigzag-item.text {
+    padding: 1.5rem !important;
+  }
+
+  /* ! slider small screen */
+  .review-container {
+    flex-direction: column; /* Stack items vertically */
+    padding: 2rem 1rem !important; /* Adjust padding */
+    flex-wrap: wrap; /* Ensures content wraps on smaller screens */
+    justify-content: center; /* Centers content */
+  }
+
+  .review-content {
+    text-align: center !important;
+  }
+  .review-customer-photo {
+    display: none;
+  }
+
+  .slider {
+    min-width: 90vw !important;
+    max-width: 95vw !important;
+  }
+
+  .slider-btn {
+    padding: 0.6rem !important;
+  }
+
+  .slider-btn-left {
+    left: 0.5rem !important; /* Adjust as needed */
+  }
+
+  .slider-btn-right {
+    right: 0.5rem !important; /* Adjust as needed */
+  }
+}
 @media (max-width: 768px) {
   .zigzag-row {
     grid-template-columns: 1fr;
@@ -714,17 +816,71 @@ select:focus {
   .zigzag-row .zigzag-item.image {
     order: 2;
   }
+
+  /* Adjust slider width for responsiveness */
+  .slider {
+    min-width: 70vw;
+    max-width: 80vw;
+  }
+
+  .slider-btn {
+  }
+
+  .review-container {
+    align-items: flex-start !important;
+  }
 }
 
-/* ! Bobby - customer reviews section  */
+/* Large screens */
+@media (min-width: 1024px) {
+  section {
+    padding: 4rem;
+  }
 
+  .newAppointmentForm input,
+  .newAppointmentForm select,
+  .newAppointmentForm button,
+  .adminLoginModal input,
+  .adminLoginModal button {
+    font-size: var(--font-size-base);
+  }
+
+  .newAppointmentForm .error-message,
+  .adminLoginModal .error-message {
+    font-size: var(--font-size-sm);
+    transform: translate(-50%, -450%);
+  }
+
+  .review-container {
+    padding: 4rem 10rem !important;
+  }
+
+  .review-customer-photo {
+    width: 8rem !important;
+    height: 8rem !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  section {
+    padding: 5rem;
+  }
+
+  .slider {
+    max-width: 50vw !important;
+  }
+}
+
+/* * END OF RESPONSIVE */
+
+/* ! Bobby - customer reviews section  */
 .slider {
   min-width: 60vw;
-  max-width: 16rem;
+  max-width: 75vw;
   height: 16rem;
   margin: 0 auto;
   position: relative;
-  background-color: #213547;
+  background-color: var(--background-color-cta);
   border-radius: var(--border-radius-xl);
   /* IN THE END */
   overflow: hidden;
@@ -733,6 +889,7 @@ select:focus {
 .slide {
   position: absolute;
   top: 0;
+  /* left: 0s; */
   width: 100%;
   /* height: 100%; */
 
@@ -746,53 +903,82 @@ select:focus {
 
 .slider-btn {
   position: absolute;
-  top: calc(60% - 1.5rem);
-  /* top: 50%; */
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 10;
   border: none;
   background-color: var(--color-secondary);
-  opacity: 0.7;
+  opacity: 0.8;
   font-family: inherit;
-  color: black;
-  border-radius: 50%;
-  height: 4rem;
-  width: 4rem;
-  font-size: 1.25rem;
+  color: var(--color-primary);
+  border-radius: var(--border-radius-circle);
+
   cursor: pointer;
 
-  transform: translateY(-150%);
+  /* ? set width thru padding */
+  padding: 0.8rem;
 }
 
 .slider-btn-left {
-  left: 0;
+  left: 1rem; /* Adjust as needed */
 }
 
 .slider-btn-right {
-  right: 0;
+  right: 1rem; /* Adjust as needed */
+}
+/* Additional button styles for improved hover and focus states */
+.slider-btn:hover {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+  transition: transform 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.slider-btn:focus {
+  outline: none;
+  box-shadow: 0 0 5px var(--color-secondary);
+}
+
+.customer-reviews p {
+  margin-bottom: 2rem;
+  font-style: italic;
 }
 
 .review-container {
-  margin-left: 2rem;
-  width: 45rem;
-  height: 40%;
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  flex-direction: column;
-}
+  display: flex; /* Arrange items side by side */
+  /* align-items: center; Vertically center content */
 
-.review-customer-box {
-  display: grid;
-  grid-template-columns: 6rem 1fr;
-  align-items: end;
-  column-gap: 0.5rem;
+  gap: 2rem; /* Space between text and photo */
+  padding: 2rem 6rem;
+  color: var(--text-color-gray);
+  flex-direction: row-reverse; /* Reverse the order of elements */
 }
 
 .review-customer-photo {
-  display: block;
-  grid-row: 1 / span 2;
-  width: 5rem;
-  border-radius: 50%;
+  width: 6rem;
+  height: 6rem;
+  border-radius: var(--border-radius-circle);
+  object-fit: cover;
+  flex-shrink: 1;
+}
+
+.review-content {
+  display: flex;
+  flex-direction: column; /* Stack the title and text */
+  gap: 1rem;
+  text-align: left;
+}
+
+.review-title {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+}
+
+.review-text {
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  font-style: italic;
 }
 
 /* DOTS */
@@ -809,9 +995,8 @@ select:focus {
   border: none;
   background-color: rgba(221, 161, 94, 1);
   opacity: 0.5;
-  height: 0.5rem;
-  width: 0.5rem;
-  border-radius: 50%;
+  padding: 0.5rem;
+  border-radius: var(--border-radius-circle);
   margin-right: 1rem;
   cursor: pointer;
   transition: all 0.5s;
@@ -824,9 +1009,32 @@ select:focus {
   margin: 0;
 }
 
+/* Add focus and hover states to the slider */
+.slider:focus {
+  outline: 3px solid var(--color-secondary);
+}
+
+.slider:active {
+  /* background-color: var(--color); */
+  box-shadow: var(--box-shadow-dark);
+}
+
+/* Adjust for better accessibility: dot-active animation */
 .dot-active {
-  background-color: #dda15e;
+  background-color: var(--color-secondary);
   opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Add transition effect for dots */
+.dots .dot {
+  transition: all 0.3s ease;
+}
+
+.dots .dot:hover {
+  background-color: var(--color-primary);
+  opacity: 0.9;
+  transform: scale(1.1);
 }
 
 /*  */
