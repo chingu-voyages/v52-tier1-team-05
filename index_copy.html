@@ -6,6 +6,14 @@
     <link rel="stylesheet" href="./src/styles/style.css" />
     <link rel="icon" type="image/png" href="./src/logo/sunvibe-logo1.png" />
     <script type="module" src="src/js/controller.js"></script>
+    <!-- <script
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+      type="module"
+    ></script>
+    <script
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+      nomodule
+    ></script> -->
 
     <title>SOLAR PLANNER</title>
   </head>
@@ -25,6 +33,50 @@
         </ul>
       </div>
     </header>
+
+    <!-- ! ADMIN SECTION (ADMIN PAGE) -->
+    <!-- ! ADMIN SECTION (Admin Dashboard) -->
+    <section class="admin-section">
+      <div class="admin-dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <div class="sidebar-logo">
+            <img src="./src/logo/sunvibe-logo1.png" alt="SunVibes Logo" />
+            <h2>SunVibes</h2>
+          </div>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item"><a href="#">Dashboard</a></li>
+            <li class="sidebar-item">
+              <a href="./src/admin/admin.html">Appointments</a>
+            </li>
+            <li class="sidebar-item"><a href="#">User Management</a></li>
+            <li class="sidebar-item"><a href="#">Settings</a></li>
+            <li class="sidebar-item"><a href="#">Log Out</a></li>
+          </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="dashboard-main">
+          <h1>Admin Dashboard</h1>
+          <h2>Resident Appointment Request</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Resident Name</th>
+                <th>Address</th>
+                <th>Appointment Date</th>
+                <th>Appointment Time</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="appointments-tbody">
+              <!-- Data will be dynamically loaded here -->
+            </tbody>
+          </table>
+        </main>
+      </div>
+    </section>
 
     <!-- * ADMIN LOGIN MODAL -->
     <div class="login-overlay hidden">
@@ -309,22 +361,31 @@
           <li>Culture</li>
           <li>LA City Hall</li>
         </div>
-        <div class="support">
-          Support
-          <li>Getting started</li>
-          <li>Help Center</li>
-        </div>
 
         <div class="follow">
           Follow
-          <li>Facebbok</li>
-          <li>Twitter</li>
-          <li>Instagram</li>
-          <li>Linkedin</li>
-          <li>Youtube</li>
+          <li>
+            <ion-icon class="custom-icon" name="logo-facebook"></ion-icon
+            >Facebbok
+          </li>
+          <li>
+            <ion-icon class="custom-icon" name="logo-twitter"></ion-icon>Twitter
+          </li>
+          <li>
+            <ion-icon class="custom-icon" name="logo-instagram"></ion-icon
+            >Instagram
+          </li>
+          <li>
+            <ion-icon class="custom-icon" name="logo-linkedin"></ion-icon
+            >Linkedin
+          </li>
+          <li>
+            <ion-icon class="custom-icon" name="logo-youtube"></ion-icon>Youtube
+          </li>
         </div>
       </div>
     </section>
+
     <!-- ! FOOTER FOR CHRISTINA -->
     <footer>
       <p class="footer-copyright">
@@ -383,11 +444,7 @@
         </li>
         <li>
           Guillermo
-          <a
-            href="https://www.linkedin.com/in/guillermo-guevara-6758a51a0?trk=contact-info"
-            target="_blank"
-            aria-label="Guillermo's LinkedIn"
-          >
+          <a href="#" target="_blank" aria-label="Guillermo's LinkedIn">
             <img
               class="linkedin"
               src="src/images/icons/linkedin.svg"

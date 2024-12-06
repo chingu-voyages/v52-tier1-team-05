@@ -7,7 +7,7 @@ export default class ModalView {
   constructor(modalElement, overlayElement, toggleButtonEl, submitButtonEl) {
     this._modal = document.querySelector(modalElement);
     this._modalOverlay = document.querySelector(overlayElement);
-    this._modalToggleButton = document.querySelector(toggleButtonEl);
+    this._modalToggleButton = document.querySelectorAll(toggleButtonEl);
     this._submitButton = document.querySelector(submitButtonEl);
 
     // ! Bind methods
@@ -43,15 +43,16 @@ export default class ModalView {
   async handleFormSubmit(e, onSuccess) {
     console.log('form submit running');
     e.preventDefault();
-    this._submitButton.disabled = true;
 
     try {
+      this._submitButton.disabled = true;
       const isValid = await this._validator.isValid;
+      console.log('is the form valid', isValid);
       if (isValid) {
         const formData = this._getFormData();
+        // console.log(formData);
+
         if (onSuccess) onSuccess(formData);
-      } else {
-        this._handleFailure();
       }
     } catch (error) {
       console.error('Form submission error:', error);
@@ -113,7 +114,9 @@ export default class ModalView {
   // Add handler for opening/closing modal
   addHandlerToggleModal() {
     if (this._modalToggleButton) {
-      this._modalToggleButton.addEventListener('click', this.handleToggleModal);
+      this._modalToggleButton.forEach(button =>
+        button.addEventListener('click', this.handleToggleModal)
+      );
     }
   }
 

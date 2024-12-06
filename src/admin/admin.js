@@ -1,32 +1,41 @@
-function loadAppointments() {
-  fetch('/src/data/appointments.json')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Failed to fetch appointments: ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .then(appointments => {
-      const tbody = document.getElementById('appointments-tbody');
-      tbody.innerHTML = ''; // Clear any existing content
+import { AppState } from '../js/model';
 
-      appointments.forEach((appointment, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${appointment.fullName}</td>
-          <td>${appointment.streetAddress}</td>
-          <td>${appointment.aptDate}</td>
-          <td>${appointment.aptTimeslot}</td>
-          <td>${appointment.status}</td>
-          <td>
-            <button class="confirm" onclick="confirmAppointment(${index})">Confirm</button>
-            <button class="cancel" onclick="cancelAppointment(${index})">Cancel</button>
-          </td>
-        `;
-        tbody.appendChild(row);
-      });
-    })
-    .catch(error => console.error('Error loading appointments:', error));
+function loadAppointments() {
+  try {
+    console.log('loadAppointments running');
+    const appointments = AppState.appointments;
+
+    if (!appointments || !Array.isArray(appointments)) {
+      throw new Error('Appointments data is missing or invalid');
+    }
+
+    console.log(appointments);
+
+    const tbody = document.getElementById('appointments-tbody');
+    if (!tbody) {
+      throw new Error('Could not find the tbody element');
+    }
+
+    tbody.innerHTML = ''; // Clear any existing content
+
+    appointments.forEach((appointment, index) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${appointment.fullName}</td>
+        <td>${appointment.streetAddress}</td>
+        <td>${appointment.aptDate}</td>
+        <td>${appointment.aptTimeslot}</td>
+        <td>${appointment.status}</td>
+        <td>
+          <button class="confirm" onclick="confirmAppointment(${index})">Confirm</button>
+          <button class="cancel" onclick="cancelAppointment(${index})">Cancel</button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  } catch (error) {
+    console.error('Error loading appointments:', error);
+  }
 }
 
 // Confirm an appointment

@@ -1,3 +1,4 @@
+import { adminCredentials } from '../config';
 import { notyf } from '../helpers';
 import ModalView from './ModalView';
 import JustValidate from 'just-validate';
@@ -7,6 +8,8 @@ class AdminLoginModal extends ModalView {
   _formOverlay = document.querySelector('.login-overlay'); // Modal overlay
   _submitButton = document.querySelector('.login-submit-btn'); // Submit button
   _toggleLoginButton = document.querySelector('.toggle-login-btn');
+  _spinnerDiv = document.querySelector('.spinner-div'); // Spinner container
+  _spinner = document.querySelector('.spinner'); // Spinner
   _validator;
 
   constructor() {
@@ -52,23 +55,67 @@ class AdminLoginModal extends ModalView {
       ]);
   }
 
-  // Handle successful form submission
-  async _handleSuccess() {
-    const formData = this._getFormData();
+  // ! TO DELETE THIS CODE
+  // async _handleSuccess() {
+  //   console.log('HANDLE RUNNING');
+  //   const formData = this._getFormData();
 
-    try {
-      // Mock login validation (replace with API call or backend logic)
-      if (formData.username === 'admin' && formData.password === 'admin123') {
-        notyf.success('Login successful!');
-        this._form.reset(); // Reset the form
-        this.handleToggleModal(); // Close the modal
-      }
-    } catch (error) {
-      console.error('Login Error:', error);
-      notyf.error('Invalid username or password. Please try again');
-    } finally {
-    }
-  }
+  //   try {
+  //     console.log('starting try block');
+  //     // Mock login validation (replace with API call or backend logic)
+  //     if (
+  //       formData.username === adminCredentials.username &&
+  //       formData.password === adminCredentials.password
+  //     ) {
+  //       notyf.success('Login successful!');
+  //       this._form.reset(); // Reset the form
+  //       this.handleToggleModal(); // Close the modal
+  //     }
+  //   } catch (error) {
+  //     console.error('Login Error:', error);
+  //     notyf.error('Invalid username or password. Please try again');
+  //   } finally {
+  //   }
+  // }
+  // ! TO DELETE THIS CODE ABOVE
+
+  // Handle successful form submission
+
+  // async handleFormSubmit(e, onSuccess) {
+  //   console.log('form submit running');
+  //   e.preventDefault();
+
+  //   try {
+  //     this._submitButton.disabled = true;
+
+  //     const isValid = await this._validator.isValid; // Ensure this works as intended
+  //     console.log('Is the form valid:', isValid);
+
+  //     if (isValid) {
+  //       const formData = this._getFormData();
+  //       if (
+  //         formData.username === adminCredentials.username &&
+  //         formData.password === adminCredentials.password
+  //       ) {
+  //         notyf.success('Login successful!');
+  //         this._form.reset(); // Reset the form
+  //         this.handleToggleModal(); // Close the modal
+  //       }
+
+  //       if (onSuccess) {
+  //         console.log('Calling onSuccess...');
+  //         await onSuccess(formData);
+  //       }
+  //     } else {
+  //       this._handleFailure();
+  //     }
+  //   } catch (error) {
+  //     console.error('Form submission error:', error);
+  //     notyf.error('An error occurred during form submission.');
+  //   } finally {
+  //     this._submitButton.disabled = false;
+  //   }
+  // }
 
   // Handle validation failure
   _handleFailure() {
@@ -85,10 +132,39 @@ class AdminLoginModal extends ModalView {
     };
   }
 
-  // // Add event listener for form submission
-  // addHandlerSubmitForm() {
-  //   this._form.addEventListener('submit', this.handleFormSubmit);
-  // }
+  // Display spinner
+  renderSpinner(message = '') {
+    // Hide form elements while keeping them in the DOM
+    this._form
+      .querySelectorAll('h2, label, input, button')
+      .forEach(el => (el.style.display = 'none'));
+
+    // Show the spinner
+
+    this._spinnerDiv.style.display = 'block';
+    this._spinnerDiv.classList.remove('hidden'); // Remove hidden class if previously set
+    this._spinnerDiv.classList.add('visible');
+
+    this._spinnerDiv.querySelector('p').textContent = message || 'Loading...';
+
+    // ! 5 sec timeout before return
+    setTimeout(() => {
+      return;
+    }, 5000);
+  }
+
+  // Hide spinner
+  cancelSpinner() {
+    // Restore visibility of form elements
+    this._form
+      .querySelectorAll('h2, label, input, button')
+      .forEach(el => (el.style.display = 'block'));
+
+    // Hide the spinner
+    this._spinnerDiv.style.display = 'none';
+    this._spinnerDiv.classList.remove('visible');
+    this._spinnerDiv.classList.add('hidden');
+  }
 }
 
 export default new AdminLoginModal();

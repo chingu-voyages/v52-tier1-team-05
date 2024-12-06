@@ -6,16 +6,15 @@ import {
 } from './helpers';
 
 export const AppState = {
-  adminAccounts: JSON.parse(localStorage.getItem('adminAccounts')) || [],
   appointments: JSON.parse(localStorage.getItem('appointments')) || [],
   addresses: [],
   pendingAppointmentObject: localStorage.getItem('pendingAppointment') || null,
+  currentAdminAccount: null,
 
   // Initialize state with local storage data
   initializeState() {
     this._finishAnyPendingRequests();
     this._initializeAppointments();
-    this._initializeAdminAccounts();
   },
 
   _finishAnyPendingRequests() {
@@ -51,12 +50,6 @@ export const AppState = {
     this.appointments = storedAppointments;
   },
 
-  _initializeAdminAccounts() {
-    const storedAdminAccounts =
-      JSON.parse(localStorage.getItem('adminAccounts')) || [];
-    this.adminAccounts = storedAdminAccounts;
-  },
-
   // Add appointment and update localStorage
   addAppointment(newAppointment) {
     // add 'status: confirmed'
@@ -86,19 +79,5 @@ export const AppState = {
       localStorage.setItem('appointments', JSON.stringify(this.appointments));
       console.log('Modified appointment:', updatedObject);
     }
-  },
-
-  // Add admin account and update localStorage
-  addAdminAccount(newAdminAccount) {
-    this.adminAccounts.push(newAdminAccount);
-    localStorage.setItem('adminAccounts', JSON.stringify(this.adminAccounts));
-    console.log('Added admin account:', newAdminAccount);
-  },
-
-  // Delete admin account and update localStorage
-  deleteAdminAccount(adminId) {
-    this.adminAccounts = this.adminAccounts.filter(a => a.id !== adminId);
-    localStorage.setItem('adminAccounts', JSON.stringify(this.adminAccounts));
-    console.log('Deleted admin account with ID:', adminId);
   },
 };

@@ -63,13 +63,15 @@ class NewAptView extends ModalView {
     // Show the spinner
     this._spinnerDiv.style.display = 'block'; // Show the spinner
     this._spinnerDiv.classList.remove('hidden'); // Remove hidden class if previously set
+    this._spinnerDiv.classList.add('visible');
+
     this._spinnerDiv.querySelector('p').textContent =
       message || 'Processing...';
 
     const spinnerCancelButton = this._spinnerDiv.querySelector(
       '.spinner-cancel-btn'
     );
-    spinnerCancelButton.addEventListener('click', () => this._handleCancel());
+    spinnerCancelButton?.addEventListener('click', () => this._handleCancel());
 
     // Show the spinner
     this._spinnerDiv = this._form.querySelector('.spinner-div');
@@ -90,7 +92,7 @@ class NewAptView extends ModalView {
   cancelSpinner() {
     if (this._spinnerDiv) {
       this._spinnerDiv.style.display = 'none'; // Hide the spinner
-      this._spinnerDiv.classList.add('hidden'); // Optionally, add the hidden class for better control
+      this._spinnerDiv.classList.add('hidden');
     }
 
     // Restore visibility of form elements
