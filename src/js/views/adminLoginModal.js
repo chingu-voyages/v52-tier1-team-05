@@ -141,16 +141,14 @@ class AdminLoginModal extends ModalView {
 
     // Show the spinner
 
-    this._spinnerDiv.style.display = 'block';
+    this._spinnerDiv.style.display = 'flex';
+    this._spinnerDiv.style.flexDirection = 'column';
+    this._spinnerDiv.style.gap = '1rem';
+
     this._spinnerDiv.classList.remove('hidden'); // Remove hidden class if previously set
     this._spinnerDiv.classList.add('visible');
 
     this._spinnerDiv.querySelector('p').textContent = message || 'Loading...';
-
-    // ! 5 sec timeout before return
-    setTimeout(() => {
-      return;
-    }, 5000);
   }
 
   // Hide spinner

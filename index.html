@@ -26,10 +26,36 @@
       </div>
     </header>
 
+    <!-- ! ADMIN SECTION (ADMIN PAGE) -->
+    <section class="hideSection">
+      <main>
+        <h1>SunVibes</h1>
+        <h2>Resident Appointment Request</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Resident Name</th>
+              <th>Address</th>
+              <th>Appointment Date</th>
+              <th>Appointment Time</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="appointments-tbody">
+            <!-- Data will be dynamically loaded here -->
+          </tbody>
+        </table>
+      </main>
+    </section>
+
     <!-- * ADMIN LOGIN MODAL -->
     <div class="login-overlay hidden">
       <form class="adminLoginModal hidden">
-        <div class="spinner-div hidden"><p>Loading...</p></div>
+        <div class="spinner-div hidden">
+          <div class="spinner"></div>
+          <p>Loading...</p>
+        </div>
 
         <h2 class="form-title">Admin Login</h2>
 

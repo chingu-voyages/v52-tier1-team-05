@@ -60,24 +60,27 @@ async function controlAdminLogin(formData) {
     adminLoginModal.renderSpinner('Checking your credentials...');
 
     // Credentials check
-    if (
+    const credentialsGood =
       formData.username === adminCredentials.username &&
-      formData.password === adminCredentials.password
-    ) {
-      notyf.success('Login successful!');
-      setTimeout(() => {
-        window.location.href = 'src/admin/admin.html'; // ! Redirect to admin.html
-      }, 7000);
-    } else notyf.error('Wrong username or password... please try again');
+      formData.password === adminCredentials.password;
+
+    if (!credentialsGood)
+      notyf.error('Wrong username or password... please try again');
 
     // Success - make it current account
     model.AppState.currentAdminAccount = formData;
   } catch (error) {
   } finally {
-    adminLoginModal.cancelSpinner();
-    adminLoginModal._form.reset();
+    setTimeout(() => {
+      adminLoginModal._form.reset();
+      adminLoginModal.handleToggleModal(); // Close modal window
+      adminLoginModal.cancelSpinner();
+      notyf.success('Login successful!');
+    }, 5000);
+
+    // adminLoginModal._form.reset();
     // setTimeout;
-    adminLoginModal.handleToggleModal(); // Close modal window
+    // adminLoginModal.handleToggleModal(); // Close modal window
   }
 
   // success message

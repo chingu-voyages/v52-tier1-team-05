@@ -93,6 +93,7 @@ class NewAptView extends ModalView {
     if (this._spinnerDiv) {
       this._spinnerDiv.style.display = 'none'; // Hide the spinner
       this._spinnerDiv.classList.add('hidden');
+      this._spinnerDiv.classList.remove('visible');
     }
 
     // Restore visibility of form elements
