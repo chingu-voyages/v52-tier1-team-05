@@ -1,13 +1,20 @@
 // controller.js
 
-import { formatDate, notyf } from './helpers';
+import {
+  formatDate,
+  loginAdminUISwitch,
+  loginAdminHeaderSwitch,
+  notyf,
+} from './helpers';
 import { optimizedValidateAddress } from './databaseUtility.js';
 
 import * as model from './model';
 
 import adminLoginModal from './views/adminLoginModal';
 import newAptView from './views/newAptView';
+import appointmentsView from './views/appointmentsView.js';
 import customerSlider from './views/customerSlider.js';
+
 import { adminCredentials } from './config.js';
 
 async function controlAppointmentFormSubmit(formData) {
@@ -72,19 +79,22 @@ async function controlAdminLogin(formData) {
   } catch (error) {
   } finally {
     setTimeout(() => {
-      adminLoginModal._form.reset();
+      appointmentsView.displayAppointments();
+      loginAdminHeaderSwitch(document.querySelector('.toggle-login-btn a')); // header switch
+      loginAdminUISwitch(document.querySelectorAll('section')); // content / UI switch
+      adminLoginModal._form.reset(); // reset form
       adminLoginModal.handleToggleModal(); // Close modal window
       adminLoginModal.cancelSpinner();
       notyf.success('Login successful!');
-    }, 5000);
-
-    // adminLoginModal._form.reset();
-    // setTimeout;
-    // adminLoginModal.handleToggleModal(); // Close modal window
+    }, 1000);
   }
-
-  // success message
 }
+
+// modify appointment
+async function controlModifyAppointment() {}
+
+// cancel appointment
+async function controlCancelAppointment() {}
 
 async function init() {
   model.AppState.initializeState();
@@ -95,6 +105,8 @@ async function init() {
 
   newAptView.addHandlerSubmitForm(controlAppointmentFormSubmit);
   adminLoginModal.addHandlerSubmitForm(controlAdminLogin);
+
+  appointmentsView.generateMockAppointments();
 }
 
 init();
