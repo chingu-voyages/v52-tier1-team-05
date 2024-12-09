@@ -208,7 +208,7 @@ export async function optimizedValidateAddress(zipCode, streetAddress) {
       console.log('Database is empty, fetching data...');
       await fetchAndStoreData();
     }
-
+    console.log('database populated');
     const db = await openDatabase();
 
     // Format input

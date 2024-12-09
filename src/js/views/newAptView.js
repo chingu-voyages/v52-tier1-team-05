@@ -2,6 +2,7 @@ import JustValidate from 'just-validate';
 import { debounce, searchAddress } from '../databaseUtility.js';
 import { notyf } from '../helpers';
 import ModalView from './ModalView';
+import * as model from '../model.js';
 
 class NewAptView extends ModalView {
   _form = document.querySelector('.newAppointmentForm');
@@ -17,6 +18,14 @@ class NewAptView extends ModalView {
   _suggestionsContainer = document.getElementById('suggestions');
   _zipCodeEL = document.getElementById('zipCode');
   _currentQuery = ''; // Store the current query to avoid race conditions
+  _fullNameEl = document.getElementById('fullName');
+  _id; // Store the ID for the editing session
+  _emailEl = document.getElementById('email');
+  _streetAddressEl = document.getElementById('streetAddress');
+  _zipCodeEl = document.getElementById('zipCode');
+  _secondLineAddressEl = document.getElementById('secondLineAddress');
+  _aptDateEl = document.getElementById('aptDate');
+  _aptTimeslotEl = document.getElementById('aptTimeslot');
 
   constructor() {
     super(
@@ -269,17 +278,99 @@ class NewAptView extends ModalView {
     if (firstInvalidField) firstInvalidField.focus();
   }
 
-  _getFormData() {
-    return {
-      fullName: document.getElementById('fullName').value,
-      id: `${Math.random() + Math.random()}`,
-      email: document.getElementById('email').value,
-      streetAddress: document.getElementById('streetAddress').value,
-      zipCode: document.getElementById('zipCode').value,
-      secondLineAddress: document.getElementById('secondLineAddress').value,
-      aptDate: document.getElementById('aptDate').value,
-      aptTimeslot: document.getElementById('aptTimeslot').value,
-    };
+  populateFormWithExistingData(appointment) {
+    console.log(appointment);
+    // save id in this._id
+    this._id = appointment.id;
+
+    this._form.classList.add('edit-session');
+    this._submitButton.textContent = 'Save changes';
+    this._submitButton.classList.add('edit-session');
+    this._submitButton.classList.remove('form-submit-btn');
+    this._submitButton.removeAttribute('type');
+    const titleEl = this._form.querySelector('h2');
+    titleEl.textContent = 'Editing Appointment... ';
+
+    // Update the form input fields with the existing appointment data
+    this._fullNameEl.value = appointment.fullName || '';
+    this._emailEl.value = appointment.email || '';
+    this._streetAddressEl.value = appointment.streetAddress || '';
+    this._zipCodeEl.value = appointment.zipCode || '';
+    this._secondLineAddressEl.value = appointment.secondLineAddress || '';
+    this._aptDateEl.value = appointment.aptDate || '';
+    this._aptTimeslotEl.value = appointment.aptTimeslot || '';
+  }
+
+  // ! I WAS HERE
+  // _addSubmitEditHandler() {
+  //   console.log('submit edit handler running');
+
+  //   this._form.addEventListener('submit', event => {
+  //     event.preventDefault(); // Prevent the default form submission behavior
+
+  //     if (this._form.classList.contains('edit-session')) {
+  //       // If the form is in "edit-session" mode
+  //       this._saveEditedAppointment();
+  //     } else {
+  //       console.log('not editing session submit');
+  //       return;
+  //     }
+  //   });
+  // }
+
+  _saveEditedAppointment() {
+    console.log('save edited appointment RUNNINGS');
+    const updatedAppointment = this._getFormData(true);
+    console.log(updatedAppointment);
+
+    // Update the appointment in the appointments array (find by ID or other identifier)
+    const index = model.AppState.appointments.findIndex(
+      appt => +appt.id === +updatedAppointment.id
+    );
+    console.log(index, 'index');
+
+    if (index !== -1) {
+      model.AppState.appointments[index] = updatedAppointment; // Update appointment
+      notyf.success('Appointment successfully updated!');
+    } else {
+      notyf.error('Appointment not found for updating!');
+    }
+
+    // Reset after editing
+    this.handleToggleModal();
+    this._form.reset();
+    this._form.classList.remove('edit-session'); // Reset form to "create" mode
+    this._submitButton.classList.remove('edit-session');
+    this._submitButton.classList.add('form-submit-btn');
+    this._submitButton.type = 'submit';
+    this._submitButton.textContent = 'Create Appointment'; // Restore button text
+  }
+
+  _getFormData(isEditingSession) {
+    if (isEditingSession) {
+      return {
+        fullName: this._fullNameEl.value,
+        id: this._id,
+        secondLineAddress: this._secondLineAddressEl.value,
+        aptDate: this._aptDateEl.value,
+        aptTimeslot: this._aptTimeslotEl.value,
+        zipCode: this._zipCodeEl.value,
+        streetAddress: this._streetAddressEl.value,
+        email: this._emailEl.value,
+      };
+    } else {
+      this._id = Math.random().toString(36).substr(2, 9); // Generate unique ID
+      return {
+        fullName: this._fullNameEl.value,
+        id: this._id,
+        email: this._emailEl.value,
+        streetAddress: this._streetAddressEl.value,
+        secondLineAddress: this._secondLineAddressEl.value,
+        aptDate: this._aptDateEl.value,
+        aptTimeslot: this._aptTimeslotEl.value,
+        zipCode: this._zipCodeEl.value,
+      };
+    }
   }
 }
 

@@ -244,6 +244,7 @@ table {
   margin-right: auto;
   border: #755984 solid 3px;
   background-color: rgba(245, 245, 245, 0.7);
+  font-weight: 600;
 }
 
 thead {
@@ -271,7 +272,80 @@ td {
 .action-button {
   padding: 0.5rem !important;
 }
+.admin-section {
+  border: none;
+}
+.admin-section main {
+  position: relative;
+}
 
+.edit-session {
+  background-color: var(--color-primary) !important;
+  color: var(--text-color-whitesmoke) !important;
+}
+
+/* ! PAGINATION */
+.pagination-controls {
+  position: absolute;
+  bottom: -7%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-50%);
+  gap: 1rem; /* Adjust spacing between buttons */
+}
+
+.pagination-button {
+  border: none;
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  cursor: pointer;
+
+  /* Circular shape for consistency */
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  padding: 0.5rem 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: bold;
+
+  opacity: 0.8;
+  transition: transform 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.pagination-button.active {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.pagination-button:hover {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  opacity: 0.9;
+  transform: scale(1.1);
+}
+
+.pagination-button:focus {
+  outline: none;
+  box-shadow: 0 0 5px var(--color-secondary);
+}
+
+.pagination-info {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  color: var(--text-color-gray);
+}
+
+/* ! I believe this code bellow isn't usedsa */
 .completed td {
   background-color: var(--background-color-cta);
   color: whitesmoke;
@@ -954,7 +1028,6 @@ select:focus {
   /* THIS creates the animation! */
   transition: transform 1s;
 }
-
 .slider-btn {
   position: absolute;
   top: 50%;
@@ -962,15 +1035,23 @@ select:focus {
   z-index: 10;
   border: none;
   background-color: var(--color-secondary);
-  opacity: 0.8;
-  font-family: inherit;
   color: var(--color-primary);
-  border-radius: var(--border-radius-circle);
-
   cursor: pointer;
 
-  /* ? set width thru padding */
-  padding: 0.6rem;
+  /* Ensure circular shape */
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+
+  display: flex; /* Center the content */
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0.8;
+  font-family: inherit;
+  font-size: 1.2rem;
+
+  transition: transform 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
 }
 
 .slider-btn-left {

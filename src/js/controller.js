@@ -5,6 +5,7 @@ import {
   loginAdminUISwitch,
   loginAdminHeaderSwitch,
   notyf,
+  saveAppointmentsToLocalStorage,
 } from './helpers';
 import { optimizedValidateAddress } from './databaseUtility.js';
 
@@ -42,6 +43,7 @@ async function controlAppointmentFormSubmit(formData) {
 
     // 4) Process form submission (e.g., update database or state)
     model.AppState.addAppointment(formData);
+
     setTimeout(() => {
       notyf.open({
         type: 'success',
@@ -79,7 +81,6 @@ async function controlAdminLogin(formData) {
   } catch (error) {
   } finally {
     setTimeout(() => {
-      appointmentsView.displayAppointments();
       loginAdminHeaderSwitch(document.querySelector('.toggle-login-btn a')); // header switch
       loginAdminUISwitch(document.querySelectorAll('section')); // content / UI switch
       adminLoginModal._form.reset(); // reset form
@@ -91,10 +92,79 @@ async function controlAdminLogin(formData) {
 }
 
 // modify appointment
-async function controlModifyAppointment() {}
+async function controlModifyAppointment(appointmentId) {
+  console.log('controlModifyAppointment runnng');
+  try {
+    // Retrieve the existing appointment data from the model
+    const appointment = model.AppState.appointments.find(
+      appt => appt.id === appointmentId
+    );
+
+    if (!appointment) {
+      throw new Error('Appointment not found.');
+    }
+    console.log(appointment);
+
+    // Open the appointment modification form with the current data (this can be a modal)
+    appointmentsView.renderEditForm(appointment);
+    // FAKE Address validation
+
+    const isValidAddress = true;
+    if (!isValidAddress) {
+      throw new Error('Invalid address selected.');
+    }
+
+    // ! condition to modify
+    // // Modify the appointment in the model
+    model.AppState.modifyAppointment(appointmentId, appointment);
+    // Update appointments view
+    appointmentsView.displayAppointments();
+    // Display a success message
+    // notyf.success('Appointment successfully updated!');
+
+    // Optionally, close the form/modal
+    // appointmentsView.handleToggleModal();
+    console.log('controlModifyAppointment ending...');
+  } catch (err) {
+    console.error(err);
+    notyf.error(`Failed to modify the appointment. ${err.message}`);
+  } finally {
+    // Optionally, close the form/modal
+    appointmentsView.handleToggleModal();
+  }
+}
 
 // cancel appointment
-async function controlCancelAppointment() {}
+async function controlCancelAppointment(appointmentId) {
+  try {
+    // Retrieve the existing appointment data from the model
+    const appointment = model.AppState.appointments.find(
+      appt => appt.id === appointmentId
+    );
+
+    if (!appointment) {
+      throw new Error('Appointment not found.');
+    }
+
+    // Confirm cancellation
+    const confirmCancel = window.confirm(
+      'Are you sure you want to cancel this appointment?'
+    );
+    if (!confirmCancel) return;
+
+    // Cancel the appointment in the model
+    model.AppState.cancelAppointment(appointmentId);
+
+    // Display a success message
+    notyf.success('Appointment successfully cancelled!');
+
+    // Refresh the appointment list
+    appointmentsView.displayAppointments();
+  } catch (err) {
+    console.error(err);
+    notyf.error(`Failed to cancel the appointment. ${err.message}`);
+  }
+}
 
 async function init() {
   model.AppState.initializeState();
@@ -103,42 +173,20 @@ async function init() {
   if (model.AppState.pendingAppointmentObject)
     controlAppointmentFormSubmit(model.AppState.pendingAppointmentObject);
 
+  // ! MODIFY THESE HANDLERS!!! USE CHAT WINDOW THAT'S OPEN
   newAptView.addHandlerSubmitForm(controlAppointmentFormSubmit);
   adminLoginModal.addHandlerSubmitForm(controlAdminLogin);
 
-  appointmentsView.generateMockAppointments();
+  //* Add event listener for action buttons (modify/cancel)
+  appointmentsView.addHandlerActionButton((e, appointmentId) => {
+    if (e.target.classList.contains('modify-button')) {
+      controlModifyAppointment(appointmentId);
+    } else if (e.target.classList.contains('cancel-button')) {
+      controlCancelAppointment(appointmentId);
+    }
+  });
+
+  // newAptView._addSubmitEditHandler();
 }
 
 init();
-
-// // ! testing sela's table
-// function loadAppointments() {
-//   console.log('running loadAppointments');
-//   const tbody = document.getElementById('appointments-tbody');
-
-//   const appointments = model.AppState.appointments;
-
-//   console.log(appointments);
-//   // .then(appointments => {
-//   //   const tbody = document.getElementById('appointments-tbody');
-//   //   tbody.innerHTML = ''; // Clear any existing content
-
-//   appointments.forEach((appointment, index) => {
-//     const row = document.createElement('tr');
-//     row.innerHTML = `
-//           <td>${appointment.fullName}</td>
-//           <td>${appointment.streetAddress}</td>
-//           <td>${appointment.aptDate}</td>
-//           <td>${appointment.aptTimeslot}</td>
-//           <td>${appointment.status}</td>
-//           <td>
-//             <button class="confirm" onclick="confirmAppointment(${index})">Confirm</button>
-//             <button class="cancel" onclick="cancelAppointment(${index})">Cancel</button>
-//           </td>
-//         `;
-//     tbody.appendChild(row);
-//   });
-// }
-
-// // Load appointments when the page is loaded
-// window.onload = loadAppointments;

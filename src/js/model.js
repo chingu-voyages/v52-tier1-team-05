@@ -3,6 +3,7 @@
 import {
   addAppointmentToLocalStorage,
   currentPendingAppointmentRequest,
+  saveAppointmentsToLocalStorage,
 } from './helpers';
 
 export const AppState = {
@@ -60,9 +61,9 @@ export const AppState = {
   },
 
   // Delete appointment and update localStorage
-  deleteAppointment(appointmentId) {
+  cancelAppointment(appointmentId) {
     this.appointments = this.appointments.filter(a => a.id !== appointmentId);
-    localStorage.setItem('appointments', JSON.stringify(this.appointments));
+    saveAppointmentsToLocalStorage(this.appointments);
     console.log('Deleted appointment with ID:', appointmentId);
   },
 
@@ -76,7 +77,8 @@ export const AppState = {
         ...this.appointments[appointmentIndex],
         ...updatedObject,
       };
-      localStorage.setItem('appointments', JSON.stringify(this.appointments));
+
+      saveAppointmentsToLocalStorage(this.appointments);
       console.log('Modified appointment:', updatedObject);
     }
   },

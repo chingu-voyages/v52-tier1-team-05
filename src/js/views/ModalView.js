@@ -40,28 +40,6 @@ export default class ModalView {
     }
   }
 
-  async handleFormSubmit(e, onSuccess) {
-    console.log('form submit running');
-    e.preventDefault();
-
-    try {
-      this._submitButton.disabled = true;
-      const isValid = await this._validator.isValid;
-      console.log('is the form valid', isValid);
-      if (isValid) {
-        const formData = this._getFormData();
-        // console.log(formData);
-
-        if (onSuccess) onSuccess(formData);
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      notyf.error('An error occurred during form submission.');
-    } finally {
-      this._submitButton.disabled = false;
-    }
-  }
-
   // Toggle visibility and add class to body
   toggleVisibility(...elements) {
     elements.forEach(el => {
@@ -119,9 +97,42 @@ export default class ModalView {
       );
     }
   }
+  // ! FORM SUBMIT HANDLER
+  async handleFormSubmit(e, onSuccess) {
+    e.preventDefault();
 
+    try {
+      // EDITING
+      const isEditingSession =
+        this._modal.classList.contains('edit-session') ||
+        this._submitButton.classList.contains('edit-session');
+
+      if (isEditingSession) {
+        console.log('Edit session detected. Handling edit logic.');
+
+        this._saveEditedAppointment();
+        return;
+      }
+
+      // REGULAR SUBMIT
+      this._submitButton.disabled = true;
+      const isValid = await this._validator.isValid;
+      console.log('is the form valid', isValid);
+      if (isValid) {
+        const formData = this._getFormData();
+        // console.log(formData);
+
+        if (onSuccess) onSuccess(formData);
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      notyf.error('An error occurred during form submission.');
+    } finally {
+      this._submitButton.disabled = false;
+    }
+  }
   // Add handler for form Submit
-  addHandlerSubmitForm(handlerFunction = null) {
+  addHandlerSubmitForm(handlerFunction = null, isEditingSession = false) {
     if (!this._modal || !this._submitButton) {
       return;
     }
@@ -131,9 +142,18 @@ export default class ModalView {
       return;
     }
 
-    this._modal.addEventListener('submit', async e => {
-      await this.handleFormSubmit(e, handlerFunction);
-    });
+    if (isEditingSession) {
+      console.log('editing block in addHandlerSubmitForm in ModalView');
+      this._modal.addEventListener('submit', async e => {
+        await this.handleFormSubmit(e, handlerFunction);
+      });
+    }
+
+    if (handlerFunction) {
+      this._modal.addEventListener('submit', async e => {
+        await this.handleFormSubmit(e, handlerFunction);
+      });
+    }
   }
 
   // Add handler for closing modal on outside click or ESC key press

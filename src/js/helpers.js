@@ -13,6 +13,7 @@ export function saveAppointmentsToLocalStorage(appointmentsArray = null) {
     localStorage.setItem('appointments', JSON.stringify(appointments));
   }
 }
+
 export function addAppointmentToLocalStorage(newAppointment) {
   // Step 1: Retrieve the current appointments from localStorage (if any)
   let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
@@ -83,13 +84,13 @@ export function loginAdminHeaderSwitch(headerElement) {
 
     // Update styles
     headerElement.style.color = 'var(--color-secondary)';
-    headerElement.style.cursor = 'not-allowed'; // Change cursor to indicate non-interaction
-    headerElement.style.pointerEvents = 'none'; // Disable click functionality
+    headerElement.style.cursor = 'not-allowed';
+    headerElement.style.pointerEvents = 'none';
 
     // Disable its parent container if needed
     const toggleLoginContainer = headerElement.closest('.toggle-login-btn');
     if (toggleLoginContainer) {
-      toggleLoginContainer.style.pointerEvents = 'none'; // Disable interactions
+      toggleLoginContainer.style.pointerEvents = 'none';
     }
   }
 }
