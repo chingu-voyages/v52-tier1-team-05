@@ -29,7 +29,7 @@ export default class ModalView {
   }
 
   // Handle toggling modal visibility
-  handleToggleModal(e) {
+  handleToggleModal() {
     const isVisible = !this._modal.classList.contains('hidden');
 
     // Call toggleVisibility only once with the correct state
@@ -140,13 +140,6 @@ export default class ModalView {
     if (handlerFunction === null) {
       this._modal.addEventListener('submit', this.handleFormSubmit);
       return;
-    }
-
-    if (isEditingSession) {
-      console.log('editing block in addHandlerSubmitForm in ModalView');
-      this._modal.addEventListener('submit', async e => {
-        await this.handleFormSubmit(e, handlerFunction);
-      });
     }
 
     if (handlerFunction) {

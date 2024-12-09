@@ -54,7 +54,7 @@ async function controlAppointmentFormSubmit(formData) {
     }, 7000);
     // 5) Render success message
   } catch (err) {
-    console.error(err);
+    console.error(err.message || err);
     notyf.error(`Could not create your appointment. ${err.message}.`);
   } finally {
     newAptView.cancelSpinner(); // Ensure the spinner is stopped in the finally block
@@ -73,26 +73,32 @@ async function controlAdminLogin(formData) {
       formData.username === adminCredentials.username &&
       formData.password === adminCredentials.password;
 
-    if (!credentialsGood)
+    if (credentialsGood) {
+      setTimeout(() => {
+        loginAdminHeaderSwitch(document.querySelector('.toggle-login-btn a')); // header switch
+        loginAdminUISwitch(document.querySelectorAll('section')); // content / UI switch
+        adminLoginModal.handleToggleModal(); // Close modal window
+        adminLoginModal.cancelSpinner();
+        notyf.success('Login successful!');
+      }, 1000);
+    } else {
+      adminLoginModal.cancelSpinner();
+
       notyf.error('Wrong username or password... please try again');
+    }
 
     // Success - make it current account
     model.AppState.currentAdminAccount = formData;
   } catch (error) {
+    console.error(error.message || err);
   } finally {
-    setTimeout(() => {
-      loginAdminHeaderSwitch(document.querySelector('.toggle-login-btn a')); // header switch
-      loginAdminUISwitch(document.querySelectorAll('section')); // content / UI switch
-      adminLoginModal._form.reset(); // reset form
-      adminLoginModal.handleToggleModal(); // Close modal window
-      adminLoginModal.cancelSpinner();
-      notyf.success('Login successful!');
-    }, 1000);
+    adminLoginModal._form.reset(); // reset form
   }
 }
 
 // modify appointment
-async function controlModifyAppointment(appointmentId) {
+async function controlModifyAppointment(e, appointmentId) {
+  console.log(e);
   console.log('controlModifyAppointment runnng');
   try {
     // Retrieve the existing appointment data from the model
@@ -103,19 +109,19 @@ async function controlModifyAppointment(appointmentId) {
     if (!appointment) {
       throw new Error('Appointment not found.');
     }
-    console.log(appointment);
 
     // Open the appointment modification form with the current data (this can be a modal)
     appointmentsView.renderEditForm(appointment);
-    // FAKE Address validation
 
-    const isValidAddress = true;
-    if (!isValidAddress) {
-      throw new Error('Invalid address selected.');
-    }
+    // ! condition to modify FINISH THIS
 
-    // ! condition to modify
     // // Modify the appointment in the model
+    const isEditingFinished = await newAptView.markEditSessionFinished();
+
+    if (isEditingFinished) {
+      console.log('editing finished.. adding new object to state...');
+    } else console.log('editing session FALSE');
+
     model.AppState.modifyAppointment(appointmentId, appointment);
     // Update appointments view
     appointmentsView.displayAppointments();
@@ -173,14 +179,14 @@ async function init() {
   if (model.AppState.pendingAppointmentObject)
     controlAppointmentFormSubmit(model.AppState.pendingAppointmentObject);
 
-  // ! MODIFY THESE HANDLERS!!! USE CHAT WINDOW THAT'S OPEN
   newAptView.addHandlerSubmitForm(controlAppointmentFormSubmit);
   adminLoginModal.addHandlerSubmitForm(controlAdminLogin);
 
   //* Add event listener for action buttons (modify/cancel)
   appointmentsView.addHandlerActionButton((e, appointmentId) => {
     if (e.target.classList.contains('modify-button')) {
-      controlModifyAppointment(appointmentId);
+      console.log('it contains modify');
+      controlModifyAppointment(e, appointmentId);
     } else if (e.target.classList.contains('cancel-button')) {
       controlCancelAppointment(appointmentId);
     }

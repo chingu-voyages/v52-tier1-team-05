@@ -301,7 +301,7 @@ class NewAptView extends ModalView {
     this._aptTimeslotEl.value = appointment.aptTimeslot || '';
   }
 
-  // ! I WAS HERE
+  // // ! I WAS HERE
   // _addSubmitEditHandler() {
   //   console.log('submit edit handler running');
 
@@ -318,8 +318,17 @@ class NewAptView extends ModalView {
   //   });
   // }
 
+  // ! STILL WORKING HERE
+  async markEditSessionFinished() {
+    this._form.classList.remove('edit-session'); // Reset form to "create" mode
+    this._submitButton.classList.remove('edit-session');
+    this._submitButton.classList.add('form-submit-btn');
+    this._submitButton.type = 'submit';
+    this._submitButton.textContent = 'Create Appointment'; // Restore button text
+    return true;
+  }
+
   _saveEditedAppointment() {
-    console.log('save edited appointment RUNNINGS');
     const updatedAppointment = this._getFormData(true);
     console.log(updatedAppointment);
 
@@ -332,6 +341,7 @@ class NewAptView extends ModalView {
     if (index !== -1) {
       model.AppState.appointments[index] = updatedAppointment; // Update appointment
       notyf.success('Appointment successfully updated!');
+      this.markEditSessionFinished();
     } else {
       notyf.error('Appointment not found for updating!');
     }
@@ -359,10 +369,9 @@ class NewAptView extends ModalView {
         email: this._emailEl.value,
       };
     } else {
-      this._id = Math.random().toString(36).substr(2, 9); // Generate unique ID
       return {
         fullName: this._fullNameEl.value,
-        id: this._id,
+        id: Math.random().toString(36).substr(2, 9),
         email: this._emailEl.value,
         streetAddress: this._streetAddressEl.value,
         secondLineAddress: this._secondLineAddressEl.value,
