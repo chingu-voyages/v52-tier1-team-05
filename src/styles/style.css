@@ -1213,7 +1213,7 @@ select:focus {
 /* Photo attributes - Unsplash*/
 /* Photos by Amy Hirshi, Markus Spiske, and Vivint Solar*/
 
-/* add by Memo  */
+/* FOLLOW SECTION BY MEMO AND CHRISTINA  */
 .follow-main {
   padding: 20px;
   width: 90%;
@@ -1225,6 +1225,12 @@ select:focus {
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
+}
+
+.company-follow-section {
+  max-width: 600px;
+  display: flex;
+  align-content: space-between;
 }
 
 .follow-logo {
@@ -1244,18 +1250,34 @@ select:focus {
 }
 
 .company,
-.support,
 .follow {
   list-style-type: none;
-  padding: 0;
-  margin: 0;
+}
+
+.company-title,
+.follow-title {
+  text-align: left;
+  font-weight: 400;
+}
+
+.follow {
+  margin-left: 4em;
 }
 
 .company li,
-.support li,
 .follow li {
   margin-bottom: 5px;
   text-align: left;
+}
+
+/* MEDIA QUERY FOR FOLLOW SECTION */
+@media (max-width: 768px) {
+  .follow-container {
+    flex-direction: column;
+  }
+  .company-follow-section {
+    display: flex;
+  }
 }
 /* FOOTER BY CHRISTINA */
 
@@ -1276,9 +1298,11 @@ footer ul {
   margin-bottom: 1.5em;
   font-weight: 700;
 }
-footer ul li {
+
+/* footer ul li {
   color: inherit;
-}
+} */
+
 .linkedin,
 .github {
   height: 24px;
