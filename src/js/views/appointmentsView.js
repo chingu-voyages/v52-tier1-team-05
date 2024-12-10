@@ -6,10 +6,10 @@ class AppointmentsView {
   _tableBody;
   _appointmentsPerPage = 5;
   _currentPage = 1;
+  _currentFilter = 'all';
   _paginationContainer;
 
   constructor() {
-    console.log('AppointmentsView class initialized');
     this._tableBody = document.querySelector('#appointments-tbody');
     this._paginationContainer = document.querySelector('#pagination-controls');
     this.displayAppointments();
@@ -20,20 +20,28 @@ class AppointmentsView {
     document
       .getElementById('all-appointments')
       .addEventListener('click', () => {
-        this.displayAppointments(); // Display all appointments
+        this._currentFilter = 'all';
+        this._currentPage = 1; // Reset to page 1 when a new filter is selected
+        this.displayAppointments();
       });
 
     document
       .getElementById('todays-appointments')
       .addEventListener('click', () => {
+        this._currentFilter = 'today';
+        this._currentPage = 1;
         this.displayAppointments('today');
       });
 
     document.getElementById('next-7-days').addEventListener('click', () => {
+      this._currentFilter = 'next7days';
+      this._currentPage = 1;
       this.displayAppointments('next7days');
     });
 
     document.getElementById('next-30-days').addEventListener('click', () => {
+      this._currentFilter = 'next30days';
+      this._currentPage = 1;
       this.displayAppointments('next30days');
     });
   }
@@ -181,9 +189,7 @@ class AppointmentsView {
     return appointments;
   }
 
-  sortAppointments() {}
-
-  displayAppointments(filter = 'all') {
+  displayAppointments(filter = this._currentFilter) {
     let appointments = this._getAppointmentsFromLocalStorage();
     if (
       !appointments ||
@@ -191,7 +197,6 @@ class AppointmentsView {
     ) {
       appointments = this.generateMockAppointments();
     }
-    console.log(appointments);
 
     // Apply the selected filter
     if (filter === 'today') {
@@ -211,7 +216,7 @@ class AppointmentsView {
     if (!appointments || appointments.length === 0) {
       this._tableBody.innerHTML =
         '<tr><td colspan="6">No appointments available</td></tr>';
-      this._paginationContainer.style.display = 'none'; // Hide pagination
+      this._paginationContainer.style.display = 'none';
       return;
     }
 
@@ -222,18 +227,18 @@ class AppointmentsView {
       // Generate table rows
       const rows = paginatedAppointments.map(
         appt => `
-      <tr>
-        <td>${appt.fullName}</td>
-        <td>${appt.streetAddress}</td>
-        <td>${appt.aptDate}</td>
-        <td>${appt.aptTimeslot}</td>
-        <td>${appt.status}</td>
-        <td>
-          <button class="action-button modify-button" data-id="${appt.id}">Modify</button>
-          <button class="action-button cancel-button" data-id="${appt.id}">Cancel</button>
-        </td>
-      </tr>
-    `
+        <tr>
+          <td>${appt.fullName}</td>
+          <td>${appt.streetAddress}</td>
+          <td>${appt.aptDate}</td>
+          <td>${appt.aptTimeslot}</td>
+          <td>${appt.status}</td>
+          <td>
+            <button class="action-button modify-button" data-id="${appt.id}">Modify</button>
+            <button class="action-button cancel-button" data-id="${appt.id}">Cancel</button>
+          </td>
+        </tr>
+      `
       );
 
       this._tableBody.innerHTML = rows.join('');
@@ -285,12 +290,12 @@ class AppointmentsView {
     const prevButton = document.createElement('button');
     prevButton.textContent = 'Prev';
     prevButton.classList.add('pagination-btn', 'pagination-prev');
-    prevButton.disabled = this._currentPage === 1; // Disable if on the first page
+    prevButton.disabled = this._currentPage === 1;
 
     prevButton.addEventListener('click', () => {
       if (this._currentPage > 1) {
         this._currentPage--;
-        this.displayAppointments();
+        this.displayAppointments(this._currentFilter); // Pass current filter
       }
     });
     this._paginationContainer.appendChild(prevButton);
@@ -304,7 +309,7 @@ class AppointmentsView {
 
       button.addEventListener('click', () => {
         this._currentPage = i;
-        this.displayAppointments();
+        this.displayAppointments(this._currentFilter); // Pass current filter
       });
 
       this._paginationContainer.appendChild(button);
@@ -314,12 +319,12 @@ class AppointmentsView {
     const nextButton = document.createElement('button');
     nextButton.textContent = 'Next';
     nextButton.classList.add('pagination-btn', 'pagination-next');
-    nextButton.disabled = this._currentPage === totalPages; // Disable if on the last page
+    nextButton.disabled = this._currentPage === totalPages;
 
     nextButton.addEventListener('click', () => {
       if (this._currentPage < totalPages) {
         this._currentPage++;
-        this.displayAppointments();
+        this.displayAppointments(this._currentFilter); // Pass current filter
       }
     });
     this._paginationContainer.appendChild(nextButton);

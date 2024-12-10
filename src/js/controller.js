@@ -18,6 +18,7 @@ import customerSlider from './views/customerSlider.js';
 
 import { adminCredentials } from './config.js';
 
+// ! weird stuff going on on submit - with the spinner especially
 async function controlAppointmentFormSubmit(formData) {
   console.log('controlAppointmentFormSubmit running');
   try {
@@ -109,27 +110,25 @@ async function controlModifyAppointment(appointmentId) {
       throw new Error('Appointment not found.');
     }
 
-    // Open the appointment modification form with the current data (this can be a modal)
+    // Open the appointment modification form with the current data
     appointmentsView.renderEditForm(appointment);
 
-    // Check if the editing session is finished
-
-    const isEditingFinished = await newAptView.isEditingFinished();
-    if (isEditingFinished) {
-      // Modify the appointment in the model
-      const updatedAppointment = newAptView.getFormData(true); // true = editing session
-      model.AppState.modifyAppointment(appointmentId, updatedAppointment);
-
-      // Update appointments view
-      appointmentsView.displayAppointments();
-
-      console.log('Editing finished. Appointment updated in the state.');
-
-      // Display success message
-      notyf.success('Appointment successfully updated!');
-    } else {
-      console.log('Editing session is not finished yet.');
+    // Ensure the form has finished editing before we continue
+    const updatedAppointment = await newAptView.getUpdatedFormData();
+    if (!updatedAppointment) {
+      throw new Error('Failed to retrieve updated appointment data.');
     }
+
+    // Modify the appointment in the model
+    model.AppState.modifyAppointment(appointmentId, updatedAppointment);
+
+    // Update appointments view
+    appointmentsView.displayAppointments();
+
+    console.log('Editing finished. Appointment updated in the state.');
+
+    // Display success message
+    notyf.success('Appointment successfully updated!');
 
     // Optionally, close the form/modal
     appointmentsView.handleToggleModal();
@@ -138,7 +137,7 @@ async function controlModifyAppointment(appointmentId) {
     console.error(err);
     notyf.error(`Failed to modify the appointment. ${err.message}`);
   } finally {
-    // Ensure the form/modal is closed in the finally block
+    // Ensure the form/modal is closed
     appointmentsView.handleToggleModal();
   }
 }

@@ -119,7 +119,7 @@ export default class ModalView {
       const isValid = await this._validator.isValid;
       console.log('is the form valid', isValid);
       if (isValid) {
-        const formData = this._getFormData();
+        const formData = this.getFormData();
         // console.log(formData);
 
         if (onSuccess) onSuccess(formData);

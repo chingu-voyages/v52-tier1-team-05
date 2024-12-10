@@ -41,13 +41,6 @@ class NewAptView extends ModalView {
     this._initAddressSuggestions();
   }
 
-  _initCancelButton() {
-    this._cancelButton?.addEventListener(
-      'click',
-      this._handleCancel.bind(this)
-    );
-  }
-
   _handleCancel() {
     this._clear(); // Clear the form state
     localStorage.removeItem('pendingAppointment'); // Remove pending appointment data
@@ -280,9 +273,7 @@ class NewAptView extends ModalView {
   }
 
   populateFormWithExistingData(appointment) {
-    console.log(appointment);
-    // save id in this._id
-    this._id = appointment.id;
+    this._id = appointment.id; // save id in this._id
 
     this._form.classList.add('edit-session');
     this._submitButton.textContent = 'Save changes';
@@ -302,27 +293,8 @@ class NewAptView extends ModalView {
     this._aptTimeslotEl.value = appointment.aptTimeslot || '';
   }
 
-  // ! I WAS HERE
-  // _addSubmitEditHandler() {
-  //   console.log('submit edit handler running');
-
-  //   this._form.addEventListener('submit', event => {
-  //     event.preventDefault(); // Prevent the default form submission behavior
-
-  //     if (this._form.classList.contains('edit-session')) {
-  //       // If the form is in "edit-session" mode
-  //       this._saveEditedAppointment();
-  //     } else {
-  //       console.log('not editing session submit');
-  //       return;
-  //     }
-  //   });
-  // }
-
   async _saveEditedAppointment() {
-    console.log('save edited appointment RUNNINGS');
     const updatedAppointment = this.getFormData(true);
-    console.log(updatedAppointment);
 
     // Update the appointment in the appointments array (find by ID or other identifier)
     const index = model.AppState.appointments.findIndex(
@@ -336,14 +308,18 @@ class NewAptView extends ModalView {
     } else {
       notyf.error('Appointment not found for updating!');
     }
+
+    // Resolve the editing session promise
+    if (this._editingSessionFinished) {
+      this._editingSessionFinished(true); // Notify that editing is finished
+    }
+
     this._resetEditSession();
-    console.log('save edited appointment FINISHED');
   }
 
   _resetEditSession() {
     // Reset after editing
     this.handleToggleModal();
-    this._form.reset();
     this._form.classList.remove('edit-session'); // Reset form to "create" mode
     this._submitButton.classList.remove('edit-session');
     this._submitButton.classList.add('form-submit-btn');
@@ -352,11 +328,21 @@ class NewAptView extends ModalView {
   }
 
   async isEditingFinished() {
-    const editingFinished =
-      !this._form.classList.contains('edit-session') ||
-      !this._submitButton.classList.contains('edit-session');
+    return new Promise(resolve => {
+      this._editingSessionFinished = resolve; // Store the resolve function to call it later when editing is finished
+    });
+  }
 
-    return editingFinished === true && editingFinished;
+  async getUpdatedFormData() {
+    // Check if the editing is finished
+    const isFinished = await this.isEditingFinished();
+
+    if (isFinished) {
+      // Retrieve and return the form data
+      return this.getFormData(true); // or any other form data fetching logic
+    }
+
+    return null; // Return null if editing is not finished
   }
 
   getFormData(isEditingSession) {
