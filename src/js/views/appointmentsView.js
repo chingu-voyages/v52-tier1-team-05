@@ -13,6 +13,29 @@ class AppointmentsView {
     this._tableBody = document.querySelector('#appointments-tbody');
     this._paginationContainer = document.querySelector('#pagination-controls');
     this.displayAppointments();
+    this._addNavigationEventListeners();
+  }
+
+  _addNavigationEventListeners() {
+    document
+      .getElementById('all-appointments')
+      .addEventListener('click', () => {
+        this.displayAppointments(); // Display all appointments
+      });
+
+    document
+      .getElementById('todays-appointments')
+      .addEventListener('click', () => {
+        this.displayAppointments('today');
+      });
+
+    document.getElementById('next-7-days').addEventListener('click', () => {
+      this.displayAppointments('next7days');
+    });
+
+    document.getElementById('next-30-days').addEventListener('click', () => {
+      this.displayAppointments('next30days');
+    });
   }
 
   handleModifyButtonClick(appointmentId) {
@@ -60,13 +83,24 @@ class AppointmentsView {
     ];
 
     function getRandomDate() {
-      const startDate = new Date();
-      const endDate = new Date(startDate);
-      endDate.setDate(startDate.getDate() + 90);
-      const randomDate = new Date(
-        startDate.getTime() +
-          Math.random() * (endDate.getTime() - startDate.getTime())
-      );
+      const today = new Date();
+      const randomizer = Math.random();
+      let randomDate;
+
+      if (randomizer < 0.3) {
+        // 30% chance for appointments today
+        randomDate = new Date(today);
+      } else if (randomizer < 0.7) {
+        // 40% chance for appointments in the next 7 days
+        const daysAhead = Math.floor(Math.random() * 7) + 1;
+        randomDate = new Date(today);
+        randomDate.setDate(today.getDate() + daysAhead);
+      } else {
+        // 30% chance for appointments in the next 30 days
+        const daysAhead = Math.floor(Math.random() * 30) + 8;
+        randomDate = new Date(today);
+        randomDate.setDate(today.getDate() + daysAhead);
+      }
 
       const year = randomDate.getFullYear();
       const month = ('0' + (randomDate.getMonth() + 1)).slice(-2);
@@ -78,8 +112,51 @@ class AppointmentsView {
       const randomIndex = Math.floor(Math.random() * timeslots.length);
       return timeslots[randomIndex];
     }
-
-    for (let i = 0; i < 20; i++) {
+    //  prettier-ignore
+    const validZipCodes = [
+      '90001',
+      '90002',
+      '90003',
+      '90004',
+      '90005',
+      '90006',
+      '90007',
+      '90008',
+      '90009',
+      '90010',
+      '90011',
+      '90012',
+      '90013',
+      '90014',
+      '90015',
+      '90016',
+      '90017',
+      '90018',
+      '90019',
+      '90020',
+      '90021',
+      '90022',
+      '90023',
+      '90024',
+      '90025',
+      '90026',
+      '90027',
+      '90028',
+      '90029',
+      '90030',
+      '90031',
+      '90032',
+      '90033',
+      '90034',
+      '90035',
+      '90036',
+      '90037',
+      '90038',
+      '90039',
+      '90040',
+      // Add more as needed.
+    ];
+    for (let i = 0; i < 66; i++) {
       const appointment = {
         fullName: names[Math.floor(Math.random() * names.length)],
         id: Math.random().toString(),
@@ -87,13 +164,12 @@ class AppointmentsView {
         streetAddress: `${Math.floor(Math.random() * 1000)} ${
           ['S', 'W', 'E', 'N'][Math.floor(Math.random() * 4)]
         } Bentley`,
-        zipCode: '90025',
+        zipCode:
+          validZipCodes[Math.floor(Math.random() * validZipCodes.length)],
         secondLineAddress: Math.floor(Math.random() * 200) + 1,
         aptDate: getRandomDate(),
         aptTimeslot: getRandomTimeslot(),
-        status: ['confirmed', 'pending', 'cancelled'][
-          Math.floor(Math.random() * 3)
-        ],
+        status: 'confirmed',
       };
 
       appointments.push(appointment);
@@ -105,42 +181,98 @@ class AppointmentsView {
     return appointments;
   }
 
-  displayAppointments() {
+  sortAppointments() {}
+
+  displayAppointments(filter = 'all') {
     let appointments = this._getAppointmentsFromLocalStorage();
     if (
       !appointments ||
       (Array.isArray(appointments) && appointments.length === 0)
-    )
+    ) {
       appointments = this.generateMockAppointments();
+    }
+    console.log(appointments);
 
+    // Apply the selected filter
+    if (filter === 'today') {
+      appointments = this._filterAppointmentsForToday(appointments);
+    } else if (filter === 'next7days') {
+      appointments = this._filterAppointmentsNext7Days(appointments);
+    } else if (filter === 'next30days') {
+      appointments = this._filterAppointmentsNext30Days(appointments);
+    }
+
+    // Calculate paginated results
     const start = (this._currentPage - 1) * this._appointmentsPerPage;
     const end = start + this._appointmentsPerPage;
     const paginatedAppointments = appointments.slice(start, end);
 
-    if (!paginatedAppointments || paginatedAppointments.length === 0) {
+    // Check if there are appointments to display
+    if (!appointments || appointments.length === 0) {
       this._tableBody.innerHTML =
         '<tr><td colspan="6">No appointments available</td></tr>';
+      this._paginationContainer.style.display = 'none'; // Hide pagination
       return;
     }
 
-    const rows = paginatedAppointments.map(
-      appt => `
-  <tr>
-    <td>${appt.fullName}</td>
-    <td>${appt.streetAddress}</td>
-    <td>${appt.aptDate}</td>
-    <td>${appt.aptTimeslot}</td>
-    <td>${appt.status}</td>
-    <td>
-      <button class="action-button modify-button" data-id="${appt.id}">Modify</button>
-      <button class="action-button cancel-button" data-id="${appt.id}">Cancel</button>
-    </td>
-  </tr>
-`
-    );
+    if (!paginatedAppointments || paginatedAppointments.length === 0) {
+      this._tableBody.innerHTML =
+        '<tr><td colspan="6">No appointments available for this page</td></tr>';
+    } else {
+      // Generate table rows
+      const rows = paginatedAppointments.map(
+        appt => `
+      <tr>
+        <td>${appt.fullName}</td>
+        <td>${appt.streetAddress}</td>
+        <td>${appt.aptDate}</td>
+        <td>${appt.aptTimeslot}</td>
+        <td>${appt.status}</td>
+        <td>
+          <button class="action-button modify-button" data-id="${appt.id}">Modify</button>
+          <button class="action-button cancel-button" data-id="${appt.id}">Cancel</button>
+        </td>
+      </tr>
+    `
+      );
 
-    this._tableBody.innerHTML = rows.join('');
-    this._renderPagination(appointments.length);
+      this._tableBody.innerHTML = rows.join('');
+    }
+
+    // Render pagination if more than one page of results
+    if (appointments.length > this._appointmentsPerPage) {
+      this._paginationContainer.style.display = 'flex';
+      this._renderPagination(appointments.length);
+    } else {
+      this._paginationContainer.style.display = 'none';
+    }
+  }
+
+  _filterAppointmentsForToday(appointments) {
+    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    return appointments.filter(appt => appt.aptDate === today);
+  }
+
+  _filterAppointmentsNext7Days(appointments) {
+    const today = new Date();
+    const next7Days = new Date(today);
+    next7Days.setDate(today.getDate() + 7);
+
+    return appointments.filter(appt => {
+      const appointmentDate = new Date(appt.aptDate);
+      return appointmentDate >= today && appointmentDate <= next7Days;
+    });
+  }
+
+  _filterAppointmentsNext30Days(appointments) {
+    const today = new Date();
+    const next30Days = new Date(today);
+    next30Days.setDate(today.getDate() + 30);
+
+    return appointments.filter(appt => {
+      const appointmentDate = new Date(appt.aptDate);
+      return appointmentDate >= today && appointmentDate <= next30Days;
+    });
   }
 
   _renderPagination(totalNumAppointments) {

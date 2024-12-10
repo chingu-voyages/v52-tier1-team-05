@@ -34,7 +34,7 @@ Everyone on your team should add their name along with a link to their GitHub
 your repo access and to practice PR'ing with your team _before_ you start
 coding!
 
-- Guillermo Guevara (Memo): [GitHub](https://github.com/guillermoguevara887) / [LinkedIn](www.linkedin.com/in/guillermo-guevara-6758a51a0)
+- Guillermo Guevara (Memo): [GitHub](https://github.com/guillermoguevara887) / [LinkedIn](https://www.linkedin.com/in/guillermo-guevara-6758a51a0?trk=contact-info)
 - Bogdan Terzic (Bobby): [GitHub](https://github.com/minorObsession) / [LinkedIn](https://linkedin.com/in/bogdan-terzic-606340249/)
 - Christina Ligare (Chris): [GitHub](https://github.com/codercreative) / [LinkedIn](https://www.linkedin.com/in/christina-ligare/)
 - Marisela Gomez (Sela): [GitHub](https://github.com/Mar1g0m3z) / [LinkedIn](https://www.linkedin.com/in/sela-dev/)

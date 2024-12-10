@@ -6,6 +6,14 @@
     <link rel="stylesheet" href="./src/styles/style.css" />
     <link rel="icon" type="image/png" href="./src/logo/sunvibe-logo1.png" />
     <script type="module" src="src/js/controller.js"></script>
+    <!-- <script
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+      type="module"
+    ></script>
+    <script
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+      nomodule
+    ></script> -->
 
     <title>SOLAR PLANNER</title>
   </head>
@@ -26,6 +34,49 @@
       </div>
     </header>
 
+    <!-- ! ADMIN SECTION (ADMIN PAGE) -->
+    <section class="admin-section hideSection">
+      <main>
+        <aside class="admin-nav">
+          <button id="all-appointments" class="nav-button">
+            All Appointments
+          </button>
+          <button id="todays-appointments" class="nav-button">
+            Today's Appointments
+          </button>
+          <button id="next-7-days" class="nav-button">Next 7 Days</button>
+          <button id="next-30-days" class="nav-button">Next 30 Days</button>
+        </aside>
+
+        <h1>SunVibes</h1>
+
+        <h2>Resident Appointment Requests</h2>
+
+        <!-- Pagination Controls -->
+        <div id="pagination-controls" class="pagination-controls">
+          <div class="pagination"></div>
+        </div>
+
+        <!-- Appointment Table -->
+        <table>
+          <thead>
+            <tr>
+              <th>Resident Name</th>
+              <th>Address</th>
+              <th>Appointment Date</th>
+              <th>Appointment Time</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="appointments-tbody">
+            <!-- Data will be dynamically loaded here -->
+          </tbody>
+        </table>
+      </main>
+    </section>
+
     <!-- * ADMIN LOGIN MODAL -->
     <div class="login-overlay hidden">
       <form class="adminLoginModal hidden">
@@ -44,6 +95,7 @@
         <button class="login-submit-btn" type="submit">Login</button>
       </form>
     </div>
+
     <!-- ! newAppointment form -->
     <div class="form-overlay hidden">
       <form class="newAppointmentForm hidden">
@@ -127,6 +179,7 @@
         <button type="submit" class="form-submit-btn">Submit</button>
       </form>
     </div>
+
     <!-- ! Company Section -->
     <section class="company-container">
       <div class="company-image-div"></div>
@@ -138,37 +191,6 @@
           home and start saving energy!
         </p>
       </div>
-    </section>
-
-    <!-- ! ADMIN SECTION (ADMIN PAGE) -->
-    <section class="admin-section hideSection">
-      <main>
-        <h1>SunVibes</h1>
-        <h2>Resident Appointment Requests</h2>
-
-        <!-- Pagination Controls -->
-        <div id="pagination-controls" class="pagination-controls">
-          <div class="pagination"></div>
-        </div>
-
-        <!-- Appointment Table -->
-        <table>
-          <thead>
-            <tr>
-              <th>Resident Name</th>
-              <th>Address</th>
-              <th>Appointment Date</th>
-              <th>Appointment Time</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody id="appointments-tbody">
-            <!-- Data will be dynamically loaded here -->
-          </tbody>
-        </table>
-      </main>
     </section>
 
     <!-- ! CTA section -->
@@ -243,13 +265,46 @@
 
     <!-- ! Why Choose Solar? -->
     <section class="choose-container">
-      <h2>Why Choose Solar</h2>
+      <h2 class="why-choose-section-title">Why Choose Solar</h2>
 
-      <p class="cta-p">
-        Highlighting the environmental and financial benefits of going solar:
-        reducing energy bills, saving the environment, and contributing to
-        sustainability.
-      </p>
+      <!-- QUESTION 1 -->
+
+      <details class="faq-question-container">
+        <summary>
+          <h3>How does solar energy save money?</h3>
+        </summary>
+        <div class="faq-answer">
+          Solar panels significantly reduce or even eliminate electricity bills.
+          Over time, this can save homeowners thousands of dollars while also
+          protecting them from rising energy costs.
+        </div>
+      </details>
+
+      <!-- QUESTION 2 -->
+
+      <details class="faq-question-container">
+        <summary>
+          <h3>How does solar energy help the environment?</h3>
+        </summary>
+        <div class="faq-answer">
+          Solar energy generates clean, renewable energy, reducing reliance on
+          fossil fuels. This helps combat greenhouse gas emissions, air
+          pollution, and climate change.
+        </div>
+      </details>
+
+      <!-- QUESTION 3 -->
+
+      <details class="faq-question-container">
+        <summary>
+          <h3>Will solar panels increase my property value?</h3>
+        </summary>
+        <div class="faq-answer">
+          Yes! Homes with solar panels are often more attractive to buyers, sell
+          faster, and fetch higher prices. Additionally, financial incentives
+          like tax credits add even more value.
+        </div>
+      </details>
     </section>
 
     <!-- ! Customer Reviews -->
@@ -341,19 +396,27 @@
           <li>Culture</li>
           <li>LA City Hall</li>
         </div>
-        <div class="support">
-          Support
-          <li>Getting started</li>
-          <li>Help Center</li>
-        </div>
 
         <div class="follow">
           Follow
-          <li>Facebbok</li>
-          <li>Twitter</li>
-          <li>Instagram</li>
-          <li>Linkedin</li>
-          <li>Youtube</li>
+          <li>
+            <ion-icon class="custom-icon" name="logo-facebook"></ion-icon
+            >Facebbok
+          </li>
+          <li>
+            <ion-icon class="custom-icon" name="logo-twitter"></ion-icon>Twitter
+          </li>
+          <li>
+            <ion-icon class="custom-icon" name="logo-instagram"></ion-icon
+            >Instagram
+          </li>
+          <li>
+            <ion-icon class="custom-icon" name="logo-linkedin"></ion-icon
+            >Linkedin
+          </li>
+          <li>
+            <ion-icon class="custom-icon" name="logo-youtube"></ion-icon>Youtube
+          </li>
         </div>
       </div>
     </section>

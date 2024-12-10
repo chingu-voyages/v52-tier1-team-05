@@ -26,6 +26,7 @@ class NewAptView extends ModalView {
   _secondLineAddressEl = document.getElementById('secondLineAddress');
   _aptDateEl = document.getElementById('aptDate');
   _aptTimeslotEl = document.getElementById('aptTimeslot');
+  _editingSessionFinished = null;
 
   constructor() {
     super(
@@ -301,7 +302,7 @@ class NewAptView extends ModalView {
     this._aptTimeslotEl.value = appointment.aptTimeslot || '';
   }
 
-  // // ! I WAS HERE
+  // ! I WAS HERE
   // _addSubmitEditHandler() {
   //   console.log('submit edit handler running');
 
@@ -318,18 +319,9 @@ class NewAptView extends ModalView {
   //   });
   // }
 
-  // ! STILL WORKING HERE
-  async markEditSessionFinished() {
-    this._form.classList.remove('edit-session'); // Reset form to "create" mode
-    this._submitButton.classList.remove('edit-session');
-    this._submitButton.classList.add('form-submit-btn');
-    this._submitButton.type = 'submit';
-    this._submitButton.textContent = 'Create Appointment'; // Restore button text
-    return true;
-  }
-
-  _saveEditedAppointment() {
-    const updatedAppointment = this._getFormData(true);
+  async _saveEditedAppointment() {
+    console.log('save edited appointment RUNNINGS');
+    const updatedAppointment = this.getFormData(true);
     console.log(updatedAppointment);
 
     // Update the appointment in the appointments array (find by ID or other identifier)
@@ -341,11 +333,14 @@ class NewAptView extends ModalView {
     if (index !== -1) {
       model.AppState.appointments[index] = updatedAppointment; // Update appointment
       notyf.success('Appointment successfully updated!');
-      this.markEditSessionFinished();
     } else {
       notyf.error('Appointment not found for updating!');
     }
+    this._resetEditSession();
+    console.log('save edited appointment FINISHED');
+  }
 
+  _resetEditSession() {
     // Reset after editing
     this.handleToggleModal();
     this._form.reset();
@@ -356,7 +351,15 @@ class NewAptView extends ModalView {
     this._submitButton.textContent = 'Create Appointment'; // Restore button text
   }
 
-  _getFormData(isEditingSession) {
+  async isEditingFinished() {
+    const editingFinished =
+      !this._form.classList.contains('edit-session') ||
+      !this._submitButton.classList.contains('edit-session');
+
+    return editingFinished === true && editingFinished;
+  }
+
+  getFormData(isEditingSession) {
     if (isEditingSession) {
       return {
         fullName: this._fullNameEl.value,

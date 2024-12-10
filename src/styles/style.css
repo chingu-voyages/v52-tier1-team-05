@@ -235,6 +235,44 @@ ul.header-nav-list {
   border-bottom: 2px solid var(--color-secondary); /* Underline active */
 }
 
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-primary);
+  padding: 1rem;
+  width: 200px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.nav-button {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  border: none;
+  padding: 10px;
+  margin: 5px 0;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+.admin-section {
+  margin-left: 210px; /* To create space for the sidebar */
+  padding: 1rem;
+  border: none;
+}
+.admin-section main {
+  position: relative;
+}
+
 table {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -272,12 +310,6 @@ td {
 .action-button {
   padding: 0.5rem !important;
 }
-.admin-section {
-  border: none;
-}
-.admin-section main {
-  position: relative;
-}
 
 .edit-session {
   background-color: var(--color-primary) !important;
@@ -287,7 +319,7 @@ td {
 /* ! PAGINATION */
 .pagination-controls {
   position: absolute;
-  bottom: -7%;
+  bottom: -10%;
   left: 50%;
   display: flex;
   align-items: center;

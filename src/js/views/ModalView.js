@@ -110,7 +110,7 @@ export default class ModalView {
       if (isEditingSession) {
         console.log('Edit session detected. Handling edit logic.');
 
-        this._saveEditedAppointment();
+        await this._saveEditedAppointment();
         return;
       }
 

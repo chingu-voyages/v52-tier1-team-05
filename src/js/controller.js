@@ -97,9 +97,8 @@ async function controlAdminLogin(formData) {
 }
 
 // modify appointment
-async function controlModifyAppointment(e, appointmentId) {
-  console.log(e);
-  console.log('controlModifyAppointment runnng');
+// modify appointment
+async function controlModifyAppointment(appointmentId) {
   try {
     // Retrieve the existing appointment data from the model
     const appointment = model.AppState.appointments.find(
@@ -113,29 +112,33 @@ async function controlModifyAppointment(e, appointmentId) {
     // Open the appointment modification form with the current data (this can be a modal)
     appointmentsView.renderEditForm(appointment);
 
-    // ! condition to modify FINISH THIS
+    // Check if the editing session is finished
 
-    // // Modify the appointment in the model
-    const isEditingFinished = await newAptView.markEditSessionFinished();
-
+    const isEditingFinished = await newAptView.isEditingFinished();
     if (isEditingFinished) {
-      console.log('editing finished.. adding new object to state...');
-    } else console.log('editing session FALSE');
+      // Modify the appointment in the model
+      const updatedAppointment = newAptView.getFormData(true); // true = editing session
+      model.AppState.modifyAppointment(appointmentId, updatedAppointment);
 
-    model.AppState.modifyAppointment(appointmentId, appointment);
-    // Update appointments view
-    appointmentsView.displayAppointments();
-    // Display a success message
-    // notyf.success('Appointment successfully updated!');
+      // Update appointments view
+      appointmentsView.displayAppointments();
+
+      console.log('Editing finished. Appointment updated in the state.');
+
+      // Display success message
+      notyf.success('Appointment successfully updated!');
+    } else {
+      console.log('Editing session is not finished yet.');
+    }
 
     // Optionally, close the form/modal
-    // appointmentsView.handleToggleModal();
+    appointmentsView.handleToggleModal();
     console.log('controlModifyAppointment ending...');
   } catch (err) {
     console.error(err);
     notyf.error(`Failed to modify the appointment. ${err.message}`);
   } finally {
-    // Optionally, close the form/modal
+    // Ensure the form/modal is closed in the finally block
     appointmentsView.handleToggleModal();
   }
 }
@@ -186,7 +189,7 @@ async function init() {
   appointmentsView.addHandlerActionButton((e, appointmentId) => {
     if (e.target.classList.contains('modify-button')) {
       console.log('it contains modify');
-      controlModifyAppointment(e, appointmentId);
+      controlModifyAppointment(appointmentId);
     } else if (e.target.classList.contains('cancel-button')) {
       controlCancelAppointment(appointmentId);
     }
