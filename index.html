@@ -1,716 +1,504 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./src/styles/style.css" />
-    <link rel="icon" type="image/png" href="./src/logo/sunvibe-logo1.png" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="./src/js/buttonPdf.js" defer></script>
-    <script type="module" src="src/js/controller.js"></script>
 
-    <title>SOLAR PLANNER</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./src/styles/style.css" />
+  <link rel="icon" type="image/png" href="./src/logo/sunvibe-logo1.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/html2pdf.js@0.9.2/dist/html2pdf.bundle.js"></script>
 
-  <body>
-    <!-- ! header (logo+photo)  -->
-    <header>
-      <div class="logo-container">
-        <!-- !  -->
-        <img
-          src="./src/logo/sunvibe-logo1.png"
-          class="logo"
-          alt="SunVibes logo"
-        />
-      </div>
-      <div class="header-nav-container">
-        <ul class="header-nav-list">
-          <li class="header-nav-item"><a class="home-btn">Home</a></li>
-          <li class="header-nav-item">
-            <a class="cta-btn nav-cta-btn">Sign up</a>
-          </li>
-          <li class="header-nav-item toggle-login-btn"><a>Admin Login</a></li>
-        </ul>
-      </div>
-    </header>
+  <script src="./src/js/buttonPdf.js" defer></script>
+  <script type="module" src="src/js/controller.js"></script>
 
-    <!-- ! ADMIN SECTION (ADMIN PAGE) -->
-    <section class="admin-section hideSection">
-      <main>
-        <aside class="admin-nav">
-          <button
-            data-tooltip="All Appointments"
-            id="all-appointments"
-            class="nav-button active"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              fill="#5d5a88"
-              viewBox="0 0 256 256"
-            >
-              <path
-                d="M216,64H176a48,48,0,0,0-96,0H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64ZM96,104a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Zm32-72a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32Zm48,72a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"
-              ></path>
-            </svg>
-          </button>
-          <button
-            data-tooltip="Today's Appointments"
-            id="todays-appointments"
-            class="nav-button"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              fill="#5d5a88"
-              viewBox="0 0 256 256"
-            >
-              <path
-                d="M224,71.1a8,8,0,0,1-10.78-3.42,94.13,94.13,0,0,0-33.46-36.91,8,8,0,1,1,8.54-13.54,111.46,111.46,0,0,1,39.12,43.09A8,8,0,0,1,224,71.1ZM35.71,72a8,8,0,0,0,7.1-4.32A94.13,94.13,0,0,1,76.27,30.77a8,8,0,1,0-8.54-13.54A111.46,111.46,0,0,0,28.61,60.32,8,8,0,0,0,35.71,72Zm186.1,103.94A16,16,0,0,1,208,200H167.2a40,40,0,0,1-78.4,0H48a16,16,0,0,1-13.79-24.06C43.22,160.39,48,138.28,48,112a80,80,0,0,1,160,0C208,138.27,212.78,160.38,221.81,175.94ZM150.62,200H105.38a24,24,0,0,0,45.24,0Z"
-              ></path>
-            </svg>
-          </button>
-          <button
-            data-tooltip="Next 7 Days"
-            id="next-7-days"
-            class="nav-button"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              fill="#5d5a88"
-              viewBox="0 0 256 256"
-            >
-              <path
-                d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm31.52,66.73-32,88A8,8,0,0,1,120,184a7.9,7.9,0,0,1-2.73-.48,8,8,0,0,1-4.79-10.25L140.58,96H104a8,8,0,0,1,0-16h48a8,8,0,0,1,7.52,10.73Z"
-              ></path>
-            </svg>
-          </button>
-          <button
-            data-tooltip="Next 30 Days"
-            id="next-30-days"
-            class="nav-button"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              fill="#5d5a88"
-              viewBox="0 0 256 256"
-            >
-              <path
-                d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM84,184a12,12,0,1,1,12-12A12,12,0,0,1,84,184Zm44,0a12,12,0,1,1,12-12A12,12,0,0,1,128,184Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,128,144Zm44,40a12,12,0,1,1,12-12A12,12,0,0,1,172,184Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,172,144Zm36-64H48V48H72v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24Z"
-              ></path>
-            </svg>
-          </button>
-        </aside>
+  <title>SOLAR PLANNER</title>
+</head>
 
-        <h2>Resident Appointment Requests</h2>
-        <p class="admin-section-p"></p>
-
-        <!-- Appointment Table -->
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Address</th>
-              <th>Date</th>
-              <th>Timeslot</th>
-              <th>Status</th>
-              <th class="action-cell">Action</th>
-            </tr>
-          </thead>
-
-          <tbody id="appointments-tbody">
-            <!-- Data will be dynamically loaded here -->
-          </tbody>
-        </table>
-
-        <!-- Pagination Controls -->
-        <div id="pagination-controls" class="pagination-controls"></div>
-      </main>
-    </section>
-
-    <!-- * ADMIN LOGIN MODAL -->
-    <div class="login-overlay hidden">
-      <form class="adminLoginModal hidden">
-        <div class="spinner-div hidden">
-          <div class="spinner"></div>
-          <p>Loading...</p>
-        </div>
-
-        <h2 class="form-title">Admin Login</h2>
-
-        <label for="username">Username</label>
-        <input id="username" type="text" required />
-        <label for="password">Password</label>
-        <input id="password" type="password" required />
-
-        <button class="login-submit-btn" type="submit">Login</button>
-      </form>
+<>
+  <!-- ! header (logo+photo)  -->
+  <header>
+    <div class="logo-container">
+      <!-- !  -->
+      <img src="./src/logo/sunvibe-logo1.png" class="logo" alt="SunVibes logo" />
     </div>
-
-    <!-- ! newAppointment form -->
-    <div class="form-overlay hidden">
-      <form class="newAppointmentForm hidden">
-        <div class="form-spinner-div hidden">
-          <div class="spinner"></div>
-          <p>Loading...</p>
-          <button type="button" class="spinner-cancel-btn">Cancel</button>
-        </div>
-        <h2 class="form-title">Plan Your Appointment with Ease</h2>
-
-        <!-- Full Name -->
-        <label for="fullName">Full Name</label>
-        <input
-          type="text"
-          id="fullName"
-          name="fullName"
-          placeholder="e.g., John Doe"
-        />
-        <div class="error-message" data-for="fullName"></div>
-
-        <!-- Email -->
-        <label for="email">Email Address</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="e.g., johndoe@example.com"
-        />
-        <div class="error-message" data-for="email"></div>
-
-        <!-- Zip Code -->
-        <label for="zipCode">Postal / Zip Code</label>
-        <input
-          type="text"
-          id="zipCode"
-          name="zipCode"
-          placeholder="e.g., 90001"
-        />
-        <div class="error-message" data-for="zipCode"></div>
-
-        <!-- Street Address -->
-        <label for="streetAddress">Home Address</label>
-        <input
-          type="text"
-          id="streetAddress"
-          name="address"
-          autocomplete="off"
-          placeholder="Start typing an address... e.g. 123 Main St"
-          minlength="2"
-        />
-        <div id="suggestions"></div>
-        <div class="error-message" data-for="streetAddress"></div>
-
-        <!-- Second Line Address (e.g., Apt, Suite) -->
-        <label for="secondLineAddress">Apt, Suite, Unit, etc.</label>
-        <input
-          type="text"
-          id="secondLineAddress"
-          placeholder="e.g., Apt 4B, Suite 200"
-        />
-        <div class="error-message" data-for="secondLineAddress"></div>
-
-        <!-- Appointment Date -->
-        <label for="aptDate">Appointment Date</label>
-        <input type="date" id="aptDate" name="aptDate" />
-        <div class="error-message" data-for="aptDate"></div>
-
-        <!-- Appointment Timeslot -->
-        <label for="aptTimeslot">Select a Convenient 2-Hour Window</label>
-        <select id="aptTimeslot" name="aptTimeslot">
-          <option value="" disabled selected>Select a timeslot</option>
-          <option value="7AM-9AM">7 AM - 9 AM</option>
-          <option value="9AM-11AM">9 AM - 11 AM</option>
-          <option value="11AM-1PM">11 AM - 1 PM</option>
-          <option value="1PM-3PM">1 PM - 3 PM</option>
-          <option value="3PM-5PM">3 PM - 5 PM</option>
-          <option value="5PM-7PM">5 PM - 7 PM</option>
-        </select>
-        <div class="error-message" data-for="aptTimeslot"></div>
-
-        <button type="submit" class="form-submit-btn">Submit</button>
-      </form>
+    <div class="header-nav-container">
+      <ul class="header-nav-list">
+        <li class="header-nav-item"><a class="home-btn">Home</a></li>
+        <li class="header-nav-item">
+          <a class="cta-btn nav-cta-btn">Sign up</a>
+        </li>
+        <li class="header-nav-item toggle-login-btn"><a>Admin Login</a></li>
+      </ul>
     </div>
+  </header>
 
-    <!-- ! Company Section -->
-    <section class="company-container">
-      <div class="company-image-div"></div>
-      <div class="company-div">
-        <h1 class="main-h1">SunVibes</h1>
-        <h2 class="company-h2">Solar Panel Evaluation</h2>
-        <p class="company-p">
-          Empowering LA’s green future. Get a free solar evaluation for your
-          home and start saving energy!
-        </p>
+  <!-- ! ADMIN SECTION (ADMIN PAGE) -->
+  <section class="admin-section hideSection">
+    <main>
+      <aside class="admin-nav">
+        <button data-tooltip="All Appointments" id="all-appointments" class="nav-button active">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#5d5a88" viewBox="0 0 256 256">
+            <path
+              d="M216,64H176a48,48,0,0,0-96,0H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64ZM96,104a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Zm32-72a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32Zm48,72a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z">
+            </path>
+          </svg>
+        </button>
+        <button data-tooltip="Today's Appointments" id="todays-appointments" class="nav-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#5d5a88" viewBox="0 0 256 256">
+            <path
+              d="M224,71.1a8,8,0,0,1-10.78-3.42,94.13,94.13,0,0,0-33.46-36.91,8,8,0,1,1,8.54-13.54,111.46,111.46,0,0,1,39.12,43.09A8,8,0,0,1,224,71.1ZM35.71,72a8,8,0,0,0,7.1-4.32A94.13,94.13,0,0,1,76.27,30.77a8,8,0,1,0-8.54-13.54A111.46,111.46,0,0,0,28.61,60.32,8,8,0,0,0,35.71,72Zm186.1,103.94A16,16,0,0,1,208,200H167.2a40,40,0,0,1-78.4,0H48a16,16,0,0,1-13.79-24.06C43.22,160.39,48,138.28,48,112a80,80,0,0,1,160,0C208,138.27,212.78,160.38,221.81,175.94ZM150.62,200H105.38a24,24,0,0,0,45.24,0Z">
+            </path>
+          </svg>
+        </button>
+        <button data-tooltip="Next 7 Days" id="next-7-days" class="nav-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#5d5a88" viewBox="0 0 256 256">
+            <path
+              d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm31.52,66.73-32,88A8,8,0,0,1,120,184a7.9,7.9,0,0,1-2.73-.48,8,8,0,0,1-4.79-10.25L140.58,96H104a8,8,0,0,1,0-16h48a8,8,0,0,1,7.52,10.73Z">
+            </path>
+          </svg>
+        </button>
+        <button data-tooltip="Next 30 Days" id="next-30-days" class="nav-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#5d5a88" viewBox="0 0 256 256">
+            <path
+              d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM84,184a12,12,0,1,1,12-12A12,12,0,0,1,84,184Zm44,0a12,12,0,1,1,12-12A12,12,0,0,1,128,184Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,128,144Zm44,40a12,12,0,1,1,12-12A12,12,0,0,1,172,184Zm0-40a12,12,0,1,1,12-12A12,12,0,0,1,172,144Zm36-64H48V48H72v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24Z">
+            </path>
+          </svg>
+        </button>
+      </aside>
+
+      <h2>Resident Appointment Requests</h2>
+      <p class="admin-section-p"></p>
+
+      <!-- Appointment Table -->
+      <table id="appointments-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Date</th>
+            <th>Timeslot</th>
+            <th>Status</th>
+            <th class="action-cell">Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="appointments-tbody">
+          <!-- Data will be dynamically loaded here -->
+        </tbody>
+      </table>
+      <button id="export-btn">Exportar a PDF</button>
+
+      <!-- Pagination Controls -->
+      <div id="pagination-controls" class="pagination-controls"></div>
+    </main>
+  </section>
+
+  <!-- * ADMIN LOGIN MODAL -->
+  <div class="login-overlay hidden">
+    <form class="adminLoginModal hidden">
+      <div class="spinner-div hidden">
+        <div class="spinner"></div>
+        <p>Loading...</p>
       </div>
-    </section>
 
-    <!-- ! CTA section -->
-    <section class="cta-section">
-      <h2 class="cta-title">
-        Join our solar panel program to reduce your carbon footprint and get
-        personalized energy assessments
-      </h2>
-      <button class="cta-btn">Get Your Free Solar Evaluation!</button>
-      <p class="cta-subtitle">
-        It’s simple! Fill out the form, receive a confirmation from our team,
-        and get your evaluation at your preferred timeslot. Learn more about the
-        process below.
+      <h2 class="form-title">Admin Login</h2>
+
+      <label for="username">Username</label>
+      <input id="username" type="text" required />
+      <label for="password">Password</label>
+      <input id="password" type="password" required />
+
+      <button class="login-submit-btn" type="submit">Login</button>
+    </form>
+  </div>
+
+  <!-- ! newAppointment form -->
+  <div class="form-overlay hidden">
+    <form class="newAppointmentForm hidden">
+      <div class="form-spinner-div hidden">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+        <button type="button" class="spinner-cancel-btn">Cancel</button>
+      </div>
+      <h2 class="form-title">Plan Your Appointment with Ease</h2>
+
+      <!-- Full Name -->
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" name="fullName" placeholder="e.g., John Doe" />
+      <div class="error-message" data-for="fullName"></div>
+
+      <!-- Email -->
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="e.g., johndoe@example.com" />
+      <div class="error-message" data-for="email"></div>
+
+      <!-- Zip Code -->
+      <label for="zipCode">Postal / Zip Code</label>
+      <input type="text" id="zipCode" name="zipCode" placeholder="e.g., 90001" />
+      <div class="error-message" data-for="zipCode"></div>
+
+      <!-- Street Address -->
+      <label for="streetAddress">Home Address</label>
+      <input type="text" id="streetAddress" name="address" autocomplete="off"
+        placeholder="Start typing an address... e.g. 123 Main St" minlength="2" />
+      <div id="suggestions"></div>
+      <div class="error-message" data-for="streetAddress"></div>
+
+      <!-- Second Line Address (e.g., Apt, Suite) -->
+      <label for="secondLineAddress">Apt, Suite, Unit, etc.</label>
+      <input type="text" id="secondLineAddress" placeholder="e.g., Apt 4B, Suite 200" />
+      <div class="error-message" data-for="secondLineAddress"></div>
+
+      <!-- Appointment Date -->
+      <label for="aptDate">Appointment Date</label>
+      <input type="date" id="aptDate" name="aptDate" />
+      <div class="error-message" data-for="aptDate"></div>
+
+      <!-- Appointment Timeslot -->
+      <label for="aptTimeslot">Select a Convenient 2-Hour Window</label>
+      <select id="aptTimeslot" name="aptTimeslot">
+        <option value="" disabled selected>Select a timeslot</option>
+        <option value="7AM-9AM">7 AM - 9 AM</option>
+        <option value="9AM-11AM">9 AM - 11 AM</option>
+        <option value="11AM-1PM">11 AM - 1 PM</option>
+        <option value="1PM-3PM">1 PM - 3 PM</option>
+        <option value="3PM-5PM">3 PM - 5 PM</option>
+        <option value="5PM-7PM">5 PM - 7 PM</option>
+      </select>
+      <div class="error-message" data-for="aptTimeslot"></div>
+
+      <button type="submit" class="form-submit-btn">Submit</button>
+    </form>
+  </div>
+
+  <!-- ! Company Section -->
+  <section class="company-container">
+    <div class="company-image-div"></div>
+    <div class="company-div">
+      <h1 class="main-h1">SunVibes</h1>
+      <h2 class="company-h2">Solar Panel Evaluation</h2>
+      <p class="company-p">
+        Empowering LA’s green future. Get a free solar evaluation for your
+        home and start saving energy!
       </p>
-    </section>
+    </div>
+  </section>
 
-    <!-- ! ZigZag section -->
-    <section>
-      <div class="zigzag-section">
-        <!-- ROW 1 -->
-        <div class="zigzag-row">
-          <div class="zigzag-item text">
-            <h3>Consultation & Custom Design</h3>
-            <p>
-              Personalized energy assessments based on your property’s unique
-              needs.
-            </p>
-          </div>
-          <div class="zigzag-item image">
-            <img
-              src="src/images/mtg-solar.jpg"
-              alt="Business meeting between a man and a woman"
-              title
-            />
-          </div>
+  <!-- ! CTA section -->
+  <section class="cta-section">
+    <h2 class="cta-title">
+      Join our solar panel program to reduce your carbon footprint and get
+      personalized energy assessments
+    </h2>
+    <button class="cta-btn">Get Your Free Solar Evaluation!</button>
+    <p class="cta-subtitle">
+      It’s simple! Fill out the form, receive a confirmation from our team,
+      and get your evaluation at your preferred timeslot. Learn more about the
+      process below.
+    </p>
+  </section>
+
+  <!-- ! ZigZag section -->
+  <section>
+    <div class="zigzag-section">
+      <!-- ROW 1 -->
+      <div class="zigzag-row">
+        <div class="zigzag-item text">
+          <h3>Consultation & Custom Design</h3>
+          <p>
+            Personalized energy assessments based on your property’s unique
+            needs.
+          </p>
         </div>
-        <!-- ROW 2 -->
-        <div class="zigzag-row">
-          <div class="zigzag-item image">
-            <img
-              src="src/images/solar-1.jpg"
-              alt="Man installing solar panel on house roof"
-            />
-          </div>
-          <div class="zigzag-item text">
-            <h3>Installation & Integration</h3>
-            <p>
-              Professional installation of solar panels, battery storage, and
-              optional EV chargers, handling all permitting and compliance..
-            </p>
-          </div>
+        <div class="zigzag-item image">
+          <img src="src/images/mtg-solar.jpg" alt="Business meeting between a man and a woman" title />
         </div>
-        <!-- ROW 3 -->
-        <div class="zigzag-row">
-          <div class="zigzag-item text">
-            <h3>Maintenance & Monitoring</h3>
-            <p>
-              Ongoing monitoring, maintenance, and upgrades to ensure peak
-              performance, plus options for financing, leasing, and energy
-              management support.
-            </p>
-          </div>
-          <div class="zigzag-item image">
-            <img
-              src="src/images/solar-house.jpg"
-              alt="House with solar panels"
-            />
+      </div>
+      <!-- ROW 2 -->
+      <div class="zigzag-row">
+        <div class="zigzag-item image">
+          <img src="src/images/solar-1.jpg" alt="Man installing solar panel on house roof" />
+        </div>
+        <div class="zigzag-item text">
+          <h3>Installation & Integration</h3>
+          <p>
+            Professional installation of solar panels, battery storage, and
+            optional EV chargers, handling all permitting and compliance..
+          </p>
+        </div>
+      </div>
+      <!-- ROW 3 -->
+      <div class="zigzag-row">
+        <div class="zigzag-item text">
+          <h3>Maintenance & Monitoring</h3>
+          <p>
+            Ongoing monitoring, maintenance, and upgrades to ensure peak
+            performance, plus options for financing, leasing, and energy
+            management support.
+          </p>
+        </div>
+        <div class="zigzag-item image">
+          <img src="src/images/solar-house.jpg" alt="House with solar panels" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ! Why Choose Solar? -->
+  <section class="choose-container">
+    <h2 class="why-choose-section-title">Why Choose Solar</h2>
+
+    <!-- QUESTION 1 -->
+
+    <details class="faq-question-container">
+      <summary>
+        <h3>How does solar energy save money?</h3>
+      </summary>
+      <div class="faq-answer">
+        Solar panels significantly reduce or even eliminate electricity bills.
+        Over time, this can save homeowners thousands of dollars while also
+        protecting them from rising energy costs.
+      </div>
+    </details>
+
+    <!-- QUESTION 2 -->
+
+    <details class="faq-question-container">
+      <summary>
+        <h3>How does solar energy help the environment?</h3>
+      </summary>
+      <div class="faq-answer">
+        Solar energy generates clean, renewable energy, reducing reliance on
+        fossil fuels. This helps combat greenhouse gas emissions, air
+        pollution, and climate change.
+      </div>
+    </details>
+
+    <!-- QUESTION 3 -->
+
+    <details class="faq-question-container">
+      <summary>
+        <h3>Will solar panels increase my property value?</h3>
+      </summary>
+      <div class="faq-answer">
+        Yes! Homes with solar panels are often more attractive to buyers, sell
+        faster, and fetch higher prices. Additionally, financial incentives
+        like tax credits add even more value.
+      </div>
+    </details>
+  </section>
+
+  <!-- ! Customer Reviews -->
+  <section class="customer-reviews">
+    <h2>Customer Reviews</h2>
+    <p>See what our customers say about us</p>
+
+    <!-- * Slider component -->
+    <div class="slider">
+      <!-- ! SLIDE 1   -->
+      <!-- ! new one -->
+
+      <div class="slide">
+        <div class="review-container">
+          <img class="review-customer-photo" src="./src/images/customer-chris.jpeg" alt="photo of customer Chris" />
+          <div class="review-content">
+            <h3 class="review-title">&quot;Outstanding Service&quot;</h3>
+            <blockquote class="review-text">
+              The team went above and beyond to meet our expectations. They
+              were friendly and thorough. Highly recommend them!
+            </blockquote>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- ! Why Choose Solar? -->
-    <section class="choose-container">
-      <h2 class="why-choose-section-title">Why Choose Solar</h2>
-
-      <!-- QUESTION 1 -->
-
-      <details class="faq-question-container">
-        <summary>
-          <h3>How does solar energy save money?</h3>
-        </summary>
-        <div class="faq-answer">
-          Solar panels significantly reduce or even eliminate electricity bills.
-          Over time, this can save homeowners thousands of dollars while also
-          protecting them from rising energy costs.
-        </div>
-      </details>
-
-      <!-- QUESTION 2 -->
-
-      <details class="faq-question-container">
-        <summary>
-          <h3>How does solar energy help the environment?</h3>
-        </summary>
-        <div class="faq-answer">
-          Solar energy generates clean, renewable energy, reducing reliance on
-          fossil fuels. This helps combat greenhouse gas emissions, air
-          pollution, and climate change.
-        </div>
-      </details>
-
-      <!-- QUESTION 3 -->
-
-      <details class="faq-question-container">
-        <summary>
-          <h3>Will solar panels increase my property value?</h3>
-        </summary>
-        <div class="faq-answer">
-          Yes! Homes with solar panels are often more attractive to buyers, sell
-          faster, and fetch higher prices. Additionally, financial incentives
-          like tax credits add even more value.
-        </div>
-      </details>
-    </section>
-
-    <!-- ! Customer Reviews -->
-    <section class="customer-reviews">
-      <h2>Customer Reviews</h2>
-      <p>See what our customers say about us</p>
-
-      <!-- * Slider component -->
-      <div class="slider">
-        <!-- ! SLIDE 1   -->
-        <!-- ! new one -->
-
-        <div class="slide">
-          <div class="review-container">
-            <img
-              class="review-customer-photo"
-              src="./src/images/customer-chris.jpeg"
-              alt="photo of customer Chris"
-            />
-            <div class="review-content">
-              <h3 class="review-title">&quot;Outstanding Service&quot;</h3>
-              <blockquote class="review-text">
-                The team went above and beyond to meet our expectations. They
-                were friendly and thorough. Highly recommend them!
-              </blockquote>
-            </div>
-          </div>
-        </div>
-        <!-- ! SLIDE 2   -->
-        <div class="slide">
-          <div class="review-container">
-            <img
-              class="review-customer-photo"
-              src="./src/images/customer-jennifer.jpg"
-              alt="photo of customer Jennifer"
-            />
-            <div class="review-content">
-              <h3 class="review-title">&quot;Exceptional Work&quot;</h3>
-              <blockquote class="review-text">
-                From the first consultation to the final result, I felt heard
-                and valued. The team delivered exceptional work.
-              </blockquote>
-            </div>
-          </div>
-        </div>
-        <!-- ! SLIDE 3   -->
-        <div class="slide">
-          <div class="review-container">
-            <img
-              class="review-customer-photo"
-              src="./src/images/customer-jerry.jpg"
-              alt="photo of customer Jerry"
-            />
-            <div class="review-content">
-              <h3 class="review-title">&quot;Highly Recommend!&quot;</h3>
-              <blockquote class="review-text">
-                I'm extremely happy with the service. The team was quick,
-                efficient, and handled everything professionally. Would
-                definitely hire again!
-              </blockquote>
-            </div>
-          </div>
-        </div>
-
-        <button
-          aria-label="Go to prior review"
-          class="slider-btn slider-btn-left"
-        >
-          &larr;
-        </button>
-        <button
-          aria-label="Go to next review"
-          class="slider-btn slider-btn-right"
-        >
-          &rarr;
-        </button>
-        <div
-          class="dots"
-          class="dots"
-          role="group"
-          aria-label="Customer reviews navigation"
-          aria-live="polite"
-        ></div>
-      </div>
-    </section>
-
-    <!-- ! FOLLOW SECTION - MEMO -->
-    <section class="follow-main">
-      <div class="follow-container">
-        <div class="follow-logo">
-          <div class="logo-container-1">
-            <img
-              src="./src/logo/sunvibe-logo1.png"
-              class="logo"
-              alt="Sunvibes logo"
-            />
-            <h1 class="main-h1">SunVibes</h1>
-          </div>
-        </div>
-        <div class="company-follow-section">
-          <div class="company">
-            <h2 class="company-title">Company</h2>
-
-            <li>About</li>
-            <li>Contact us</li>
-            <li>Carriers</li>
-            <li>Culture</li>
-            <li>LA City Hall</li>
-          </div>
-
-          <div class="follow">
-            <h2 class="follow-title">Follow</h2>
-
-            <li>
-              <a href="#" class="disabled-link" aria-label="SunVibe's Facebook">
-                <img
-                  class="social"
-                  src="src/images/icons/facebook.svg"
-                  alt="Facebook icon"
-                />
-              </a>
-              Facebook
-            </li>
-            <li>
-              <a href="#" class="disabled-link" aria-label="SunVibe's Twitter">
-                <img
-                  class="social"
-                  src="src/images/icons/twitter.svg"
-                  alt="Twitter icon"
-                /> </a
-              >Twitter
-            </li>
-            <li>
-              <a
-                href="#"
-                class="disabled-link"
-                aria-label="SunVibe's Instagram"
-              >
-                <img
-                  class="social"
-                  src="src/images/icons/instagram.svg"
-                  alt="Instagram icon"
-                />
-              </a>
-              Instagram
-            </li>
-            <li>
-              <a href="#" class="disabled-link" aria-label="SunVibe's LinkedIn">
-                <img
-                  class="social"
-                  src="src/images/icons/linkedin.svg"
-                  alt="LinkedIn icon"
-                />
-              </a>
-              LinkedIn
-            </li>
-            <li>
-              <a href="#" class="disabled-link" aria-label="SunVibe's YouTube">
-                <img
-                  class="social"
-                  src="src/images/icons/youtube.svg"
-                  alt="YouTube icon"
-                />
-              </a>
-              YouTube
-            </li>
+      <!-- ! SLIDE 2   -->
+      <div class="slide">
+        <div class="review-container">
+          <img class="review-customer-photo" src="./src/images/customer-jennifer.jpg"
+            alt="photo of customer Jennifer" />
+          <div class="review-content">
+            <h3 class="review-title">&quot;Exceptional Work&quot;</h3>
+            <blockquote class="review-text">
+              From the first consultation to the final result, I felt heard
+              and valued. The team delivered exceptional work.
+            </blockquote>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- ! FOOTER FOR CHRISTINA -->
-    <footer>
-      <div class="footer-columns">
-        <div class="column">
-          <!-- FIRST CONTRIBUTOR -->
-          <div class="person">
-            <span class="name">Bobby</span>
-            <div class="icons">
-              <a
-                href="https://github.com/minorObsession"
-                target="_blank"
-                aria-label="Bobby's GitHub"
-              >
-                <img
-                  class="github"
-                  src="src/images/icons/github.svg"
-                  alt="GitHub icon"
-                />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/bogdan-terzic-606340249/"
-                target="_blank"
-                aria-label="Bobby's LinkedIn"
-              >
-                <img
-                  class="linkedin"
-                  src="src/images/icons/linkedin.svg"
-                  alt="LinkedIn icon"
-                />
-              </a>
-            </div>
-          </div>
-
-          <!-- SECOND CONTRIBUTOR -->
-          <div class="person">
-            <span class="name">Christina</span>
-            <div class="icons">
-              <a
-                href="https://github.com/codercreative"
-                target="_blank"
-                aria-label="Christina's GitHub"
-              >
-                <img
-                  class="github"
-                  src="src/images/icons/github.svg"
-                  alt="GitHub icon"
-                />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/christina-ligare/"
-                target="_blank"
-                aria-label="Christina's LinkedIn"
-              >
-                <img
-                  class="linkedin"
-                  src="src/images/icons/linkedin.svg"
-                  alt="LinkedIn icon"
-                />
-              </a>
-            </div>
-          </div>
-
-          <!-- THIRD CONTRIBUTOR -->
-          <div class="person">
-            <span class="name"> Guillermo</span>
-            <div class="icons">
-              <a
-                href="https://github.com/guillermoguevara887"
-                target="_blank"
-                aria-label="Guillermo's GitHub"
-              >
-                <img
-                  class="github"
-                  src="src/images/icons/github.svg"
-                  alt="GitHub icon"
-                />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/guillermo-guevara-6758a51a0?trk=contact-info"
-                target="_blank"
-                aria-label="Guillermo's LinkedIn"
-              >
-                <img
-                  class="linkedin"
-                  src="src/images/icons/linkedin.svg"
-                  alt="LinkedIn icon"
-                />
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="column">
-          <!-- FOURTH CONTRIBUTOR -->
-          <div class="person">
-            <span class="name">Sela</span>
-            <div class="icons">
-              <a
-                href="https://github.com/Mar1g0m3z"
-                target="_blank"
-                aria-label="Sela's GitHub"
-              >
-                <img
-                  class="github"
-                  src="src/images/icons/github.svg"
-                  alt="GitHub icon"
-                />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/sela-dev/"
-                target="_blank"
-                aria-label="Sela's LinkedIn"
-              >
-                <img
-                  class="linkedin"
-                  src="src/images/icons/linkedin.svg"
-                  alt="LinkedIn icon"
-                />
-              </a>
-            </div>
-          </div>
-          <!-- FIFTH CONTRIBUTOR -->
-          <div class="person">
-            <span class="name">Sarita</span>
-            <div class="icons">
-              <a
-                href="https://www.linkedin.com/in/sjhabsc/"
-                target="_blank"
-                aria-label="Sarita's LinkedIn"
-              >
-                <img
-                  class="linkedin"
-                  src="src/images/icons/linkedin.svg"
-                  alt="LinkedIn icon"
-                />
-              </a>
-            </div>
-          </div>
-          <!-- SIXTH CONTRIBUTOR -->
-          <div class="person">
-            <span class="name">Noelle</span>
-            <div class="icons">
-              <a
-                href="https://www.linkedin.com/in/noelle-jefferson/"
-                target="_blank"
-                aria-label="Noelle's LinkedIn"
-              >
-                <img
-                  class="linkedin"
-                  src="src/images/icons/linkedin.svg"
-                  alt="LinkedIn icon"
-                />
-              </a>
-            </div>
+      <!-- ! SLIDE 3   -->
+      <div class="slide">
+        <div class="review-container">
+          <img class="review-customer-photo" src="./src/images/customer-jerry.jpg" alt="photo of customer Jerry" />
+          <div class="review-content">
+            <h3 class="review-title">&quot;Highly Recommend!&quot;</h3>
+            <blockquote class="review-text">
+              I'm extremely happy with the service. The team was quick,
+              efficient, and handled everything professionally. Would
+              definitely hire again!
+            </blockquote>
           </div>
         </div>
       </div>
-      <!-- New GitHub Link -->
-      <div class="footer-repo person">
-        <span class="name">Visit our project's repository</span>
-        <div class="icons">
-          <a
-            href="https://github.com/chingu-voyages/v52-tier1-team-05"
-            target="_blank"
-            aria-label="v52-team5's GitHub"
-          >
-            <img
-              class="github"
-              src="src/images/icons/github.svg"
-              alt="GitHub icon"
-            />
-          </a>
+
+      <button aria-label="Go to prior review" class="slider-btn slider-btn-left">
+        &larr;
+      </button>
+      <button aria-label="Go to next review" class="slider-btn slider-btn-right">
+        &rarr;
+      </button>
+      <div class="dots" class="dots" role="group" aria-label="Customer reviews navigation" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ! FOLLOW SECTION - MEMO -->
+  <section class="follow-main">
+    <div class="follow-container">
+      <div class="follow-logo">
+        <div class="logo-container-1">
+          <img src="./src/logo/sunvibe-logo1.png" class="logo" alt="Sunvibes logo" />
+          <h1 class="main-h1">SunVibes</h1>
         </div>
       </div>
+      <div class="company-follow-section">
+        <div class="company">
+          <h2 class="company-title">Company</h2>
 
-      <div class="footer-copyright">
-        <span>Copyright © 2024</span>
-        <span>Chingu Team 5, Voyage 52</span>
+          <li>About</li>
+          <li>Contact us</li>
+          <li>Carriers</li>
+          <li>Culture</li>
+          <li>LA City Hall</li>
+        </div>
+
+        <div class="follow">
+          <h2 class="follow-title">Follow</h2>
+
+          <li>
+            <a href="#" class="disabled-link" aria-label="SunVibe's Facebook">
+              <img class="social" src="src/images/icons/facebook.svg" alt="Facebook icon" />
+            </a>
+            Facebook
+          </li>
+          <li>
+            <a href="#" class="disabled-link" aria-label="SunVibe's Twitter">
+              <img class="social" src="src/images/icons/twitter.svg" alt="Twitter icon" /> </a>Twitter
+          </li>
+          <li>
+            <a href="#" class="disabled-link" aria-label="SunVibe's Instagram">
+              <img class="social" src="src/images/icons/instagram.svg" alt="Instagram icon" />
+            </a>
+            Instagram
+          </li>
+          <li>
+            <a href="#" class="disabled-link" aria-label="SunVibe's LinkedIn">
+              <img class="social" src="src/images/icons/linkedin.svg" alt="LinkedIn icon" />
+            </a>
+            LinkedIn
+          </li>
+          <li>
+            <a href="#" class="disabled-link" aria-label="SunVibe's YouTube">
+              <img class="social" src="src/images/icons/youtube.svg" alt="YouTube icon" />
+            </a>
+            YouTube
+          </li>
+        </div>
       </div>
-    </footer>
+    </div>
+  </section>
+
+  <!-- ! FOOTER FOR CHRISTINA -->
+  <footer>
+    <div class="footer-columns">
+      <div class="column">
+        <!-- FIRST CONTRIBUTOR -->
+        <div class="person">
+          <span class="name">Bobby</span>
+          <div class="icons">
+            <a href="https://github.com/minorObsession" target="_blank" aria-label="Bobby's GitHub">
+              <img class="github" src="src/images/icons/github.svg" alt="GitHub icon" />
+            </a>
+            <a href="https://www.linkedin.com/in/bogdan-terzic-606340249/" target="_blank"
+              aria-label="Bobby's LinkedIn">
+              <img class="linkedin" src="src/images/icons/linkedin.svg" alt="LinkedIn icon" />
+            </a>
+          </div>
+        </div>
+
+        <!-- SECOND CONTRIBUTOR -->
+        <div class="person">
+          <span class="name">Christina</span>
+          <div class="icons">
+            <a href="https://github.com/codercreative" target="_blank" aria-label="Christina's GitHub">
+              <img class="github" src="src/images/icons/github.svg" alt="GitHub icon" />
+            </a>
+            <a href="https://www.linkedin.com/in/christina-ligare/" target="_blank" aria-label="Christina's LinkedIn">
+              <img class="linkedin" src="src/images/icons/linkedin.svg" alt="LinkedIn icon" />
+            </a>
+          </div>
+        </div>
+
+        <!-- THIRD CONTRIBUTOR -->
+        <div class="person">
+          <span class="name"> Guillermo</span>
+          <div class="icons">
+            <a href="https://github.com/guillermoguevara887" target="_blank" aria-label="Guillermo's GitHub">
+              <img class="github" src="src/images/icons/github.svg" alt="GitHub icon" />
+            </a>
+            <a href="https://www.linkedin.com/in/guillermo-guevara-6758a51a0?trk=contact-info" target="_blank"
+              aria-label="Guillermo's LinkedIn">
+              <img class="linkedin" src="src/images/icons/linkedin.svg" alt="LinkedIn icon" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <!-- FOURTH CONTRIBUTOR -->
+        <div class="person">
+          <span class="name">Sela</span>
+          <div class="icons">
+            <a href="https://github.com/Mar1g0m3z" target="_blank" aria-label="Sela's GitHub">
+              <img class="github" src="src/images/icons/github.svg" alt="GitHub icon" />
+            </a>
+            <a href="https://www.linkedin.com/in/sela-dev/" target="_blank" aria-label="Sela's LinkedIn">
+              <img class="linkedin" src="src/images/icons/linkedin.svg" alt="LinkedIn icon" />
+            </a>
+          </div>
+        </div>
+        <!-- FIFTH CONTRIBUTOR -->
+        <div class="person">
+          <span class="name">Sarita</span>
+          <div class="icons">
+            <a href="https://www.linkedin.com/in/sjhabsc/" target="_blank" aria-label="Sarita's LinkedIn">
+              <img class="linkedin" src="src/images/icons/linkedin.svg" alt="LinkedIn icon" />
+            </a>
+          </div>
+        </div>
+        <!-- SIXTH CONTRIBUTOR -->
+        <div class="person">
+          <span class="name">Noelle</span>
+          <div class="icons">
+            <a href="https://www.linkedin.com/in/noelle-jefferson/" target="_blank" aria-label="Noelle's LinkedIn">
+              <img class="linkedin" src="src/images/icons/linkedin.svg" alt="LinkedIn icon" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- New GitHub Link -->
+    <div class="footer-repo person">
+      <span class="name">Visit our project's repository</span>
+      <div class="icons">
+        <a href="https://github.com/chingu-voyages/v52-tier1-team-05" target="_blank" aria-label="v52-team5's GitHub">
+          <img class="github" src="src/images/icons/github.svg" alt="GitHub icon" />
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-copyright">
+      <span>Copyright © 2024</span>
+      <span>Chingu Team 5, Voyage 52</span>
+    </div>
+  </footer>
   </body>
+
 </html>

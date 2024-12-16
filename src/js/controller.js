@@ -11,6 +11,7 @@ import {
   reverseLoginAdminUISwitch,
 } from './helpers';
 import { optimizedValidateAddress } from './databaseUtility.js';
+import html2pdf from 'html2pdf.js';
 
 import * as model from './model';
 
@@ -64,9 +65,8 @@ async function controlAppointmentFormSubmit(formData) {
     // Render success message after the appointment is confirmed
     notyf.open({
       type: 'confirmation',
-      message: `Your appointment is confirmed for ${
-        formData.aptTimeslot
-      } on ${formatDate(formData.aptDate)}!`,
+      message: `Your appointment is confirmed for ${formData.aptTimeslot
+        } on ${formatDate(formData.aptDate)}!`,
     });
   } catch (error) {
     err = error; // Assign error to the err variable
@@ -251,3 +251,24 @@ document.querySelector('.home-btn').addEventListener('click', () => {
     controlAdminLogout();
   }
 });
+
+
+// Export to PDF
+function exportTableToPDF() {
+  const element = document.getElementById('appointments-table');
+  const options = {
+    margin: 1,
+    filename: 'appointments.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 4 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+  };
+
+
+  html2pdf().from(element).set(options).save();
+
+}
+document.getElementById('export-btn').addEventListener('click', exportTableToPDF);
+
+
+
